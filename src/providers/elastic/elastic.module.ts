@@ -17,7 +17,7 @@ import { ElasticService } from './elastic.service'
       }),
     }),
   ],
-  providers: [ElasticService, ConfigService],
+  providers: [ElasticService],
   exports: [ElasticService],
 })
 export class ElasticModule {}
