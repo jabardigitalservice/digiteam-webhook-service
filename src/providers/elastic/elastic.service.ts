@@ -17,7 +17,7 @@ export class ElasticService {
   create = async (data: any) => {
     return this.elasticSearchService.index({
       index: this.getIndex(),
-      body: data
+      body: data,
     })
   }
 }

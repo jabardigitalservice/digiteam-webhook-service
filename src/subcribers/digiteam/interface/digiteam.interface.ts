@@ -4,17 +4,16 @@ export interface Rows {
   telegram: string
 }
 
-export interface PayloadInterface {
-  repositoryName: string
-  repositoryUrl: string
-  platform: string
+export interface Payload {
+  repoName: string
+  repoUrl: string
   url: string
   body: string
   createdBy: string
-  createdAt: Date
+  createdAt: string
 }
 
-export interface BodyInterface {
+export interface Body {
   project: string
   title: string
   participants: string[]
@@ -22,5 +21,5 @@ export interface BodyInterface {
   screenshot?: string
   isValidBody: boolean
   url: string
-  addition: PayloadInterface
+  addition: Payload
 }

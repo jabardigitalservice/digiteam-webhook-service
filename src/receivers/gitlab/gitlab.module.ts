@@ -7,6 +7,5 @@ import { QueueModule } from '../../providers/queue/queue.module'
   imports: [QueueModule],
   providers: [GitlabService],
   controllers: [GitlabController],
-  exports: [GitlabService],
 })
 export class GitlabModule {}
