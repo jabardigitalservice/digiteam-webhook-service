@@ -71,3 +71,36 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+Structure Repo
+.
+|-- src/
+|   |-- common/
+|   |   |-- helpers
+|   |   `-- ...
+|   |-- config
+|   |-- interface
+|   |-- providers/
+|   |   |-- elastic
+|   |   |-- queue
+|   |   |-- screenshot
+|   |   `-- telegram
+|   |-- receivers/
+|   |   |-- github
+|   |   |-- gitlab
+|   |   `-- ...
+|   `-- subcribers/
+|       |-- digiteam/
+|       |   |-- interface
+|       |   |-- jobs/
+|       |   |   |-- github-job
+|       |   |   |-- gitlab-job
+|       |   |   `-- ...
+|       |   |-- services/
+|       |   |   |-- payload
+|       |   |   `-- user
+|       |   `-- ...
+|       `-- ...
+|-- app.module.ts
+|-- main.ts
+`-- ...

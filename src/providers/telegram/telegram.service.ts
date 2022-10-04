@@ -11,6 +11,7 @@ export class TelegramService {
   constructor(private configService: ConfigService, private httpService: HttpService) {}
 
   public sendMessageWithBot = async (bot: string, chatId: number, message: string) => {
+    if (!message) return
     const url = `${this.url}/${bot}/sendMessage`
     this.httpService.axiosRef.post(url, {
       chat_id: chatId,
@@ -42,6 +43,7 @@ export class TelegramService {
     message: string,
     replyToMsgId?: number
   ) => {
+    if (!message) return
     if (telegramClient.disconnected) await telegramClient.connect()
     telegramClient.invoke(
       new Api.messages.SendMessage({
