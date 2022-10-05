@@ -3,29 +3,30 @@ import { Injectable } from '@nestjs/common'
 import { Job } from 'bull'
 import moment from 'moment'
 import { GitlabMerge } from 'src/interface/gitlab-merge.interface'
-import { DigiteamService } from '../digiteam.service'
-import { Payload } from '../interface/digiteam.interface'
+import { GitService } from '../git.service'
+import { Git } from '../interface/git.interface'
 import { PayloadService } from '../services/payload/payload.service'
 
 @Injectable()
 @Processor('gitlab')
 export class GitlabJob {
-  constructor(private digiteamService: DigiteamService, private payloadService: PayloadService) {}
+  constructor(private gitService: GitService, private payloadService: PayloadService) {}
 
-  @Process('event:merge:digiteam')
+  @Process('event-merge-git')
   async eventMerge(job: Job) {
     const payload = job.data as GitlabMerge
-    const data: Payload = {
+    const git: Git = {
       repoName: payload.repository.name,
       repoUrl: payload.repository.homepage,
       url: payload.object_attributes.url,
-      body: payload.object_attributes.description,
+      description: payload.object_attributes.description,
       createdBy: payload.user.name,
       createdAt: moment().toISOString(),
     }
 
-    const body = await this.payloadService.body(data)
-    this.digiteamService.sendTelegram(body)
+    const evidence = await this.payloadService.getEvidence(git)
+    this.gitService.sendTelegram(evidence)
+    this.gitService.createElastic(evidence)
     await job.finished()
   }
 }

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { Api, TelegramClient } from 'telegram'
 import { HttpService } from '@nestjs/axios'
 import random from 'random-bigint'
+import { Evidence } from 'src/interface/evidence.interface'
 
 @Injectable()
 export class TelegramService {
@@ -54,5 +55,25 @@ export class TelegramService {
         replyToMsgId,
       })
     )
+  }
+
+  public formatByCreated = (evidence: Evidence): string => {
+    const message = `
+  /lapor ${evidence.project} | ${evidence.title}
+Peserta: ${evidence.participants[0]}
+Lampiran: ${evidence.url}
+${evidence.date ? `Tanggal: ${evidence.date}` : ''}
+`
+    return evidence.participants[0] ? message : null
+  }
+
+  public formatByReview = (evidence: Evidence): string => {
+    const message = `
+/lapor ${evidence.project} | Peer code review ${evidence.title}
+Peserta: ${evidence.participants.slice(1).join('  ')}
+Lampiran: ${evidence.url}
+${evidence.date ? `Tanggal: ${evidence.date}` : ''}
+`
+    return evidence.participants.slice(1).length ? message : null
   }
 }

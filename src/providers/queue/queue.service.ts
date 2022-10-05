@@ -9,7 +9,7 @@ export class QueueService {
     @InjectQueue('github') private github: Queue
   ) {}
 
-  gitOptions: JobOptions = {
+  queueOptions: JobOptions = {
     delay: 10000,
     attempts: 1,
     priority: 1,
@@ -20,10 +20,10 @@ export class QueueService {
   }
 
   eventMergeGithub = (data: any) => {
-    this.github.add('event:merge:digiteam', data, this.gitOptions)
+    this.github.add('event-merge-git', data, this.queueOptions)
   }
 
   eventMergeGitlab = (data: any) => {
-    this.gitlab.add('event:merge:digiteam', data, this.gitOptions)
+    this.gitlab.add('event-merge-git', data, this.queueOptions)
   }
 }

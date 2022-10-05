@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Cache } from 'cache-manager'
-import { Rows } from '../../interface/digiteam.interface'
+import { GitUser } from '../../interface/git.interface'
 
 @Injectable()
 export class UserService {
@@ -12,10 +12,10 @@ export class UserService {
     @Inject(CACHE_MANAGER) private cache: Cache
   ) {}
 
-  private cacheKey = 'digiteam:users'
+  private cacheKey = 'git:users'
 
-  private searchRows = (
-    rows: Rows[],
+  private searchGitUsers = (
+    gitUsers: GitUser[],
     isFound: boolean,
     user: string
   ): {
@@ -23,9 +23,9 @@ export class UserService {
     isFound: boolean
   } => {
     let result = user
-    for (const row of rows) {
-      if (row.git === user) {
-        result = row.telegram
+    for (const gitUser of gitUsers) {
+      if (gitUser.git === user) {
+        result = gitUser.telegram
         isFound = true
         break
       }
@@ -36,30 +36,28 @@ export class UserService {
     }
   }
 
-  private mapping = (rows: Rows[], users: string[]): string[] => {
-    const result = []
-    for (const user of users) {
+  private mapping = (gitUsers: GitUser[], participants: string[]): string[] => {
+    const users = []
+    for (const user of participants) {
       const isFound = false
-      const rowSearch = this.searchRows(rows, isFound, user)
-      if (!rowSearch.isFound) result.push(user)
-      else result.push(rowSearch.result)
+      const gitUser = this.searchGitUsers(gitUsers, isFound, user)
+      if (!gitUser.isFound) users.push(user)
+      else users.push(gitUser.result)
     }
-    return result
+    return users
   }
 
-  async users(participants: string) {
-    const users: string[] = participants.trimEnd().split(/[ ,]+/)
-
+  async getUsers(participants: string[]) {
     if (!(await this.cache.get(this.cacheKey))) {
       const response = await this.httpService.axiosRef.get(
         this.configService.get('url.gitUsername')
       )
-      if (response.status !== 200) return users
+      if (response.status !== 200) return participants
       await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
     }
 
-    const rows: Rows[] = JSON.parse(await this.cache.get(this.cacheKey))
+    const gitUsers: GitUser[] = JSON.parse(await this.cache.get(this.cacheKey))
 
-    return this.mapping(rows, users)
+    return this.mapping(gitUsers, participants)
   }
 }

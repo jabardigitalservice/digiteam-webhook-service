@@ -1,6 +1,6 @@
 import { CacheModule, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { DigiteamService } from './digiteam.service'
+import { GitService } from './git.service'
 import * as redisStore from 'cache-manager-redis-store'
 import type { ClientOpts } from 'redis'
 import { AppConfigModule } from 'src/config/config.module'
@@ -12,6 +12,7 @@ import { UserService } from './services/user/user.service'
 import { GitlabJob } from './jobs/gitlab-job'
 import { GithubJob } from './jobs/github-job'
 import { PayloadService } from './services/payload/payload.service'
+import { EvidenceModule } from 'src/providers/evidence/evidence.module'
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { PayloadService } from './services/payload/payload.service'
     TelegramModule,
     ScreenshotModule,
     ElasticModule,
+    EvidenceModule,
   ],
-  providers: [DigiteamService, UserService, GitlabJob, GithubJob, PayloadService],
+  providers: [GitService, UserService, GitlabJob, GithubJob, PayloadService],
 })
-export class DigiteamModule {}
+export class GitModule {}

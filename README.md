@@ -1,8 +1,8 @@
 # Digiteam Webhook Service
   
-## Subcriber 
-   - Digiteam
-      ### Send report telegram Bot for Evidence
+## Clients 
+   - Git
+      ### Send report telegram for Evidence
 
       This git webhook includes gitlab and github, helps to automatically report each time according to the main task of making code or as a peer to peer code
       ### How to use
@@ -41,9 +41,11 @@ cp .env.example .env
 Structure Repo
 
 ```bash
+.
 ├── src/
 │   ├── common/
-│   │   ├── helpers
+│   │   ├── helpers/
+│   │   │   └── ...
 │   │   └── ...
 │   ├── config
 │   ├── interface
@@ -51,24 +53,25 @@ Structure Repo
 │   │   ├── elastic
 │   │   ├── queue
 │   │   ├── screenshot
-│   │   └── telegram
+│   │   ├── telegram
+│   │   └── evidence
 │   ├── receivers/
 │   │   ├── github
 │   │   ├── gitlab
 │   │   └── ...
-│   └── subcribers/
-│       ├── digiteam/
+│   └── clients/
+│       ├── git/
 │       │   ├── interface
 │       │   ├── jobs/
 │       │   │   ├── github-job
-│       │   │   ├── gitlab-job
-│       │   │   └── ...
+│       │   │   └── gitlab-job
 │       │   ├── services/
 │       │   │   ├── payload
 │       │   │   └── user
-│       │   └── ...
+│       │   ├── git.module
+│       │   └── git.service
 │       └── ...
-├── app.module.ts
-├── main.ts
+├── app.module
+├── main
 └── ...
 ```
