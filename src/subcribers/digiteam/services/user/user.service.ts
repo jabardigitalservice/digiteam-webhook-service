@@ -58,7 +58,7 @@ export class UserService {
       await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
     }
 
-    const rows: Rows[] = await this.cache.get(this.cacheKey)
+    const rows: Rows[] = JSON.parse(await this.cache.get(this.cacheKey))
 
     return this.mapping(rows, users)
   }

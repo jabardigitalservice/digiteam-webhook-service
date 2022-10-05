@@ -46,7 +46,9 @@ export class PayloadService {
 
     if (!body.isValidBody) throw new BadRequestException()
 
+    console.log(body.participants);
     body.participants = await this.userService.users(body.participants)
+    
 
     body.addition = payload
     body.url = payload.url
