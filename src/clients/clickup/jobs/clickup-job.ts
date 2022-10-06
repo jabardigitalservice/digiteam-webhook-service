@@ -24,7 +24,7 @@ export class ClickupJob {
     const task = await this.clickupService.GetTaskByID(payload.task_id)
 
     const statuses = this.configService.get('click.statuses') as string[]
-    if (!statuses.includes(task.status.status)) throw new BadRequestException()
+    if (!statuses.includes(task.status.status)) return job.remove()
 
     const clickup: Clickup = {
       url: task.url,
@@ -35,6 +35,6 @@ export class ClickupJob {
     this.telegramService.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
 
-    await job.finished()
+    return job.finished()
   }
 }

@@ -24,6 +24,6 @@ export class GitlabJob {
     }
 
     this.gitService.createEvidence(git)
-    await job.finished()
+    return job.finished()
   }
 }

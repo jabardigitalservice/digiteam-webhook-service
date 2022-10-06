@@ -24,6 +24,6 @@ export class GithubJob {
     }
 
     this.gitService.createEvidence(git)
-    await job.finished()
+    return job.finished()
   }
 }
