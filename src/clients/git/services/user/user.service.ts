@@ -47,13 +47,23 @@ export class UserService {
     return users
   }
 
-  async getUsers(participants: string[]) {
-    if (!(await this.cache.get(this.cacheKey))) {
+  private setUsers = async () => {
+    try {
       const response = await this.httpService.axiosRef.get(
         this.configService.get('url.gitUsername')
       )
-      if (response.status !== 200) return participants
-      await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
+      if (response.status !== 200)
+        await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  async getUsers(participants: string[]) {
+    if (!(await this.cache.get(this.cacheKey))) {
+      const isSuccess = await this.setUsers()
+      if (!isSuccess) return participants
     }
 
     const gitUsers: GitUser[] = JSON.parse(await this.cache.get(this.cacheKey))
