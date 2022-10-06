@@ -52,8 +52,8 @@ export class UserService {
       const response = await this.httpService.axiosRef.get(
         this.configService.get('url.gitUsername')
       )
-      if (response.status !== 200)
-        await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
+      if (response.status !== 200) return false
+      await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
       return true
     } catch (error) {
       return false
