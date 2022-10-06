@@ -6,7 +6,8 @@ import { JobOptions, Queue } from 'bull'
 export class QueueService {
   constructor(
     @InjectQueue('gitlab') private gitlab: Queue,
-    @InjectQueue('github') private github: Queue
+    @InjectQueue('github') private github: Queue,
+    @InjectQueue('clickup') private clickup: Queue
   ) {}
 
   queueOptions: JobOptions = {
@@ -20,10 +21,14 @@ export class QueueService {
   }
 
   eventMergeGithub = (data: any) => {
-    this.github.add('event-merge-git', data, this.queueOptions)
+    this.github.add('event-merge', data, this.queueOptions)
   }
 
   eventMergeGitlab = (data: any) => {
-    this.gitlab.add('event-merge-git', data, this.queueOptions)
+    this.gitlab.add('event-merge', data, this.queueOptions)
+  }
+
+  eventTaskMovedClickup = (data: any) => {
+    this.clickup.add('event-task-moved', data, this.queueOptions)
   }
 }

@@ -22,6 +22,9 @@ import { QueueService } from './queue.service'
     BullModule.registerQueue({
       name: 'gitlab',
     }),
+    BullModule.registerQueue({
+      name: 'clickup',
+    }),
   ],
   providers: [QueueService],
   exports: [QueueService],

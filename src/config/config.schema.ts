@@ -7,6 +7,10 @@ export const schema = Joi.object({
     env: Joi.string().valid('development', 'production').default('development'),
     key: Joi.string().required(),
   }),
+  clickup: Joi.object({
+    teamID: Joi.string().required(),
+    apiKey: Joi.string().required(),
+  }),
   telegram: Joi.object({
     bot: Joi.string().required(),
     chatID: Joi.number().required(),
@@ -28,8 +32,11 @@ export const schema = Joi.object({
     dsn: Joi.string().required(),
   }),
   url: {
-    excel: Joi.string().required(),
-    screeshot: Joi.string().required(),
+    screenshot: Joi.string().required(),
+    telegram: Joi.string().required(),
     gitUsername: Joi.string().required(),
+    imageExt: Joi.string().default('jpg|png|svg|jpeg'),
+    clickupUsername: Joi.string().required(),
+    clickup: Joi.string().required(),
   },
 })

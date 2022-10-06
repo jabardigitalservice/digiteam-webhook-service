@@ -9,6 +9,10 @@ export default () => ({
     env: process.env.APP_ENV,
     key: process.env.APP_KEY,
   },
+  clickup: {
+    teamID: process.env.CLICKUP_TEAM_ID,
+    apiKey: process.env.CLICKUP_API_KEY,
+  },
   telegram: {
     bot: process.env.TELEGRAM_BOT,
     chatID: process.env.TELEGRAM_CHAT_ID,
@@ -34,5 +38,7 @@ export default () => ({
     telegram: process.env.URL_TELEGRAM,
     gitUsername: process.env.URL_GIT_USERNAME,
     imageExt: 'jpg|png|svg|jpeg',
+    clickUpUsername: process.env.URL_CLICKUP_USERNAME,
+    clickup: process.env.URL_CLICKUP,
   },
 })

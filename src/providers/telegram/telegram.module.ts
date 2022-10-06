@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
+import { ScreenshotModule } from '../screenshot/screenshot.module'
 import { TelegramService } from './telegram.service'
 
 @Module({
@@ -8,6 +9,7 @@ import { TelegramService } from './telegram.service'
       timeout: 5000,
       maxRedirects: 5,
     }),
+    ScreenshotModule,
   ],
   providers: [TelegramService],
   exports: [TelegramService],

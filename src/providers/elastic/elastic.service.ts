@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
 import moment from 'moment'
+import { Evidence } from 'src/interface/evidence.interface'
 
 @Injectable()
 export class ElasticService {
@@ -19,5 +20,18 @@ export class ElasticService {
       index: this.getIndex(),
       body: data,
     })
+  }
+
+  public createElasticEvidence = async (evidence: Evidence): Promise<void> => {
+    const { participants } = evidence
+    for (const participant of participants) {
+      if (!participant) continue
+      this.create({
+        project: evidence.project.trimEnd(),
+        participant,
+        ...evidence.source,
+        isBodyValid: true,
+      })
+    }
   }
 }
