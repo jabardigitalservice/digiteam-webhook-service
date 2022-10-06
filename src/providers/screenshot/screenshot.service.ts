@@ -16,14 +16,16 @@ export class ScreenshotService {
   screenshot = async (url: string): Promise<string | null> => {
     if (this.isUrlImage(url)) return url
 
-    const response = await this.httpService.axiosRef.post(
-      this.configService.get('url.screenshot'),
-      {
-        url: url,
-      }
-    )
-    if (response.status !== 200) return null
-
-    return response.data
+    try {
+      const response = await this.httpService.axiosRef.post(
+        this.configService.get('url.screenshot'),
+        {
+          url: url,
+        }
+      )
+      return response.data
+    } catch (error) {
+      return null
+    }
   }
 }

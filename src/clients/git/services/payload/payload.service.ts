@@ -12,7 +12,7 @@ export class PayloadService {
     const evidence = this.evidenceService.GetEvidence(git.description)
     evidence.participants = await this.userService.getUsers(evidence.participants)
     delete git.description
-    evidence.client.Git = git
+    evidence.source = git
     evidence.url = git.url
     return evidence
   }

@@ -1,9 +1,3 @@
-import { Git } from 'src/clients/git/interface/git.interface'
-
-interface Client {
-  Git?: Git
-}
-
 export interface Evidence {
   title: string
   project: string
@@ -12,5 +6,5 @@ export interface Evidence {
   date?: string
   screenshot?: string
   isValid?: string
-  client: Client
+  source?: any
 }

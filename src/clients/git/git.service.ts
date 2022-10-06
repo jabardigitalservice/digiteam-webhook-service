@@ -66,13 +66,13 @@ export class GitService {
 
   public createElastic = async (payload: Evidence): Promise<void> => {
     const { participants } = payload
-    delete payload.client.Git.createdBy
+    delete payload.source.createdBy
     for (const participant of participants) {
       if (!participant) continue
       this.elasticService.create({
         project: payload.project.trimEnd(),
         participant,
-        ...payload.client.Git,
+        ...payload.source,
         isBodyValid: true,
       })
     }
