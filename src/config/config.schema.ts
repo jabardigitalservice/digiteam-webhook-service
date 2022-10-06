@@ -34,9 +34,8 @@ export const schema = Joi.object({
   url: {
     screenshot: Joi.string().required(),
     telegram: Joi.string().required(),
-    gitUsername: Joi.string().required(),
-    imageExt: Joi.string().default('jpg|png|svg|jpeg'),
-    clickupUsername: Joi.string().required(),
+    telegramUser: Joi.string().required(),
+    imageExt: Joi.string().default('jpg|png|jpeg'),
     clickup: Joi.string().required(),
   },
 })

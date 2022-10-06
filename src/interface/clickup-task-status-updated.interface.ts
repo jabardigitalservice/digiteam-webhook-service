@@ -1,4 +1,4 @@
-export interface ClickupTaskMoved {
+export interface ClickupTaskStatusUpdated {
   event: string
   history_items: HistoryItem[]
   task_id: string
@@ -19,25 +19,14 @@ export interface HistoryItem {
 }
 
 export interface After {
-  id: string
-  name: string
-  category: Category
-  project: Project
-}
-
-export interface Category {
-  id: string
-  name: string
-  hidden: boolean
-}
-
-export interface Project {
-  id: string
-  name: string
+  status: string
+  color: string
+  orderindex: number
+  type: string
 }
 
 export interface Data {
-  mute_notifications: boolean
+  status_type: string
 }
 
 export interface User {

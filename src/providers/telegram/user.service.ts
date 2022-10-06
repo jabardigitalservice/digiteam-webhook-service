@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Cache } from 'cache-manager'
-import { ClickupUser } from '../../interface/clickup.interface'
+import { TelegramUser } from 'src/interface/telegram-user.interface'
 
 @Injectable()
 export class UserService {
@@ -12,10 +12,10 @@ export class UserService {
     @Inject(CACHE_MANAGER) private cache: Cache
   ) {}
 
-  private cacheKey = 'clickup:users'
+  private cacheKey = 'telegram-user'
 
-  private searchClickupUsers = (
-    clickupUsers: ClickupUser[],
+  private searchTelegramUsers = (
+    telegramUsers: TelegramUser[],
     isFound: boolean,
     user: string
   ): {
@@ -23,9 +23,9 @@ export class UserService {
     isFound: boolean
   } => {
     let result = user
-    for (const clickupUser of clickupUsers) {
-      if (clickupUser.clickup === user) {
-        result = clickupUser.telegram
+    for (const telegramUser of telegramUsers) {
+      if (telegramUser.username === user) {
+        result = telegramUser.telegram
         isFound = true
         break
       }
@@ -36,13 +36,13 @@ export class UserService {
     }
   }
 
-  private mapping = (clickupUsers: ClickupUser[], participants: string[]): string[] => {
+  private mapping = (telegramUsers: TelegramUser[], participants: string[]): string[] => {
     const users = []
-    for (const user of participants) {
+    for (const participant of participants) {
       const isFound = false
-      const gitUser = this.searchClickupUsers(clickupUsers, isFound, user)
-      if (!gitUser.isFound) users.push(user)
-      else users.push(gitUser.result)
+      const telegramUser = this.searchTelegramUsers(telegramUsers, isFound, participant)
+      if (!telegramUser.isFound) users.push(participant)
+      else users.push(telegramUser.result)
     }
     return users
   }
@@ -50,7 +50,7 @@ export class UserService {
   private setUsers = async () => {
     try {
       const response = await this.httpService.axiosRef.get(
-        this.configService.get('url.clickupUsername')
+        this.configService.get('url.telegramUser')
       )
       if (response.status !== 200) return false
       await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
@@ -66,8 +66,8 @@ export class UserService {
       if (!isSuccess) return participants
     }
 
-    const clickupUsers: ClickupUser[] = JSON.parse(await this.cache.get(this.cacheKey))
+    const telegramUser: TelegramUser[] = JSON.parse(await this.cache.get(this.cacheKey))
 
-    return this.mapping(clickupUsers, participants)
+    return this.mapping(telegramUser, participants)
   }
 }

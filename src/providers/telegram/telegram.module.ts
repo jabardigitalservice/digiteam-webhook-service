@@ -1,7 +1,11 @@
 import { HttpModule } from '@nestjs/axios'
-import { Module } from '@nestjs/common'
+import { CacheModule, Module } from '@nestjs/common'
 import { ScreenshotModule } from '../screenshot/screenshot.module'
 import { TelegramService } from './telegram.service'
+import { UserService } from './user.service'
+import { ConfigService } from '@nestjs/config'
+import * as redisStore from 'cache-manager-redis-store'
+import type { ClientOpts } from 'redis'
 
 @Module({
   imports: [
@@ -10,8 +14,16 @@ import { TelegramService } from './telegram.service'
       maxRedirects: 5,
     }),
     ScreenshotModule,
+    CacheModule.registerAsync<ClientOpts>({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        store: redisStore,
+        host: configService.get('redis.host'),
+        port: configService.get('redis.port'),
+      }),
+    }),
   ],
-  providers: [TelegramService],
-  exports: [TelegramService],
+  providers: [TelegramService, UserService],
+  exports: [TelegramService, UserService],
 })
 export class TelegramModule {}

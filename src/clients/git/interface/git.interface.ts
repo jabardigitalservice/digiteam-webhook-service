@@ -1,9 +1,3 @@
-export interface GitUser {
-  Timestamp: Date
-  git: string
-  telegram: string
-}
-
 export interface Git {
   repoName: string
   repoUrl: string

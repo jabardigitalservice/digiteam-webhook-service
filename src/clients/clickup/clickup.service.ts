@@ -2,13 +2,20 @@ import { HttpService } from '@nestjs/axios'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ClickupTask } from 'src/interface/clickup-task.interface'
+import { Evidence } from 'src/interface/evidence.interface'
+import { EvidenceService } from 'src/providers/evidence/evidence.service'
+import { Clickup } from './interface/clickup.interface'
 
 @Injectable()
 export class ClickupService {
   private url = this.configService.get('url.clickup')
   private teamID = this.configService.get('clickup.teamID')
   private apiKey = this.configService.get('clickup.apiKey')
-  constructor(private httpService: HttpService, private configService: ConfigService) {}
+  constructor(
+    private httpService: HttpService,
+    private configService: ConfigService,
+    private evidenceService: EvidenceService
+  ) {}
 
   GetTaskByID = async (id: string): Promise<ClickupTask> => {
     try {
@@ -26,5 +33,12 @@ export class ClickupService {
     } catch (error) {
       throw new BadRequestException()
     }
+  }
+
+  public getEvidence = async (clickup: Clickup): Promise<Evidence> => {
+    const evidence = await this.evidenceService.GetEvidence(clickup.description)
+    evidence.source = clickup
+    evidence.url = clickup.url
+    return evidence
   }
 }

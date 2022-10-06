@@ -8,10 +8,10 @@ import { ClickupService } from './clickup.service'
 export class ClickupController {
   constructor(private config: ConfigService, private service: ClickupService) {}
 
-  @Post('/task-moved/:secret')
+  @Post('/task-status-updated/:secret')
   async merge(@Body() body: any, @Param('secret') secret: string, @Res() res: Response) {
     verifySecretKey(secret, this.config.get('app.key'))
-    this.service.taskMoved(body)
+    this.service.taskStatusUpdated(body)
     return res.send('Success')
   }
 }

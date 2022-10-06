@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { ClickupTaskMoved } from 'src/interface/clickup-task-moved.interface'
+import { ConfigService } from '@nestjs/config'
+import { ClickupTaskStatusUpdated } from 'src/interface/clickup-task-status-updated.interface'
 import { QueueService } from 'src/providers/queue/queue.service'
 
 @Injectable()
 export class ClickupService {
-  constructor(private queue: QueueService) {}
+  constructor(private queue: QueueService, private configService: ConfigService) {}
 
-  taskMoved = (body: ClickupTaskMoved) => {
-    return this.queue.eventTaskMovedClickup(body)
+  taskStatusUpdated = (body: ClickupTaskStatusUpdated) => {
+    return this.queue.eventTaskStatusUpdated(body)
   }
 }

@@ -28,7 +28,7 @@ export class QueueService {
     this.gitlab.add('event-merge', data, this.queueOptions)
   }
 
-  eventTaskMovedClickup = (data: any) => {
-    this.clickup.add('event-task-moved', data, this.queueOptions)
+  eventTaskStatusUpdated = (data: any) => {
+    this.clickup.add('event-task-status-updated', data, this.queueOptions)
   }
 }
