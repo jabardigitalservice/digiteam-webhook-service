@@ -24,7 +24,8 @@ export class ClickupJob {
     const task = await this.clickupService.GetTaskByID(payload.task_id)
 
     const statuses = this.configService.get('click.statuses') as string[]
-    if (!statuses.includes(task.status.status)) return job.remove()
+    const status = task.status.status.toUpperCase().trim()
+    if (!statuses.includes(status)) return job.remove()
 
     const clickup: Clickup = {
       url: task.url,
