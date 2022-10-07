@@ -23,7 +23,7 @@ export class GitlabJob {
       createdAt: moment().toISOString(),
     }
 
-    this.gitService.createEvidence(git)
+    this.gitService.createEvidence(git, 'gitlab')
     return job.finished()
   }
 }

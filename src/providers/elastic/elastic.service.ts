@@ -29,7 +29,7 @@ export class ElasticService {
       this.create({
         project: evidence.project.trimEnd(),
         participant,
-        ...evidence.source,
+        source: evidence.source,
         isBodyValid: true,
       })
     }

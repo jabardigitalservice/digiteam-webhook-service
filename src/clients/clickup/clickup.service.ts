@@ -41,7 +41,11 @@ export class ClickupService {
 
   public getEvidence = async (clickup: Clickup, assignees: string[]): Promise<Evidence> => {
     const evidence = await this.evidenceService.GetEvidence(clickup.description, assignees)
-    evidence.source = clickup
+    delete clickup.description
+    evidence.source = {
+      ...clickup,
+      source: 'clickup',
+    }
     evidence.url = clickup.url
     return evidence
   }

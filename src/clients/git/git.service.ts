@@ -15,16 +15,18 @@ export class GitService {
     private screenshotService: ScreenshotService
   ) {}
 
-  createEvidence = async (git: Git) => {
-    const evidence = await this.getEvidence(git)
+  createEvidence = async (git: Git, source: string) => {
+    const evidence = await this.getEvidence(git, source)
     this.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
   }
 
-  public getEvidence = async (git: Git): Promise<Evidence> => {
+  public getEvidence = async (git: Git, source: string): Promise<Evidence> => {
     const evidence = await this.evidenceService.GetEvidence(git.description)
-    delete git.description
-    evidence.source = git
+    evidence.source = {
+      ...git,
+      source: source,
+    }
     evidence.url = git.url
     return evidence
   }
