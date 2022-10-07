@@ -38,7 +38,7 @@ export class EvidenceService {
     if (!evidence.isValid) throw new BadRequestException()
 
     const participants = evidence.participants as string
-    evidence.participants = await this.userService.getUsers(participants.trimEnd().split(/[ ,]+/))
+    evidence.participants = await this.userService.getUsers(participants.trimEnd().split(/[,]+/))
 
     const date = this.evidenceRegex.date.exec(description)
     evidence.date = date ? date[1] : null
