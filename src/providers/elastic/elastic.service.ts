@@ -12,7 +12,7 @@ export class ElasticService {
   ) {}
 
   getIndex = () => {
-    return this.configService.get('app.name') + moment().format('YYYY-MM')
+    return this.configService.get('app.name') + '-' + moment().format('YYYY-MM')
   }
 
   create = async (data: any) => {
