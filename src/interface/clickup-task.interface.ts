@@ -10,7 +10,7 @@ export interface ClickupTask {
   date_updated: string
   date_closed: string
   creator: Creator
-  assignees: string[]
+  assignees: Assign[]
   checklists: string[]
   tags: string[]
   parent: string
@@ -24,6 +24,15 @@ export interface ClickupTask {
   folder: Folder
   space: Folder
   url: string
+}
+
+export interface Assign {
+  id: number
+  username: string
+  color: string
+  initials: string
+  email: string
+  profilePicture: string
 }
 
 export interface Creator {

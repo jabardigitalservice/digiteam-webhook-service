@@ -22,7 +22,7 @@ export class ClickupJob {
   async eventMerge(job: Job) {
     const payload = job.data as ClickupTaskStatusUpdated
     const task = await this.clickupService.GetTaskByID(payload.task_id)
-    
+
     const statuses = this.configService.get('clickup.statuses') as string[]
     const status = task.status.status.toUpperCase().trim()
     if (!statuses.includes(status)) return job.remove()
@@ -32,7 +32,10 @@ export class ClickupJob {
       description: task.description,
     }
 
-    const evidence = await this.clickupService.getEvidence(clickup)
+    const evidence = await this.clickupService.getEvidence(
+      clickup,
+      task.assignees.map((item) => item.username)
+    )
     this.clickupService.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
 

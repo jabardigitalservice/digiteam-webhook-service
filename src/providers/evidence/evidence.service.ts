@@ -28,7 +28,10 @@ export class EvidenceService {
     return evidence
   }
 
-  public GetEvidence = async (description: string): Promise<Evidence> => {
+  public GetEvidence = async (
+    description: string,
+    assigness: string[] = null
+  ): Promise<Evidence> => {
     const evidence = this.validateEvidence({
       project: this.evidenceRegex.project.exec(description),
       title: this.evidenceRegex.title.exec(description),
@@ -37,8 +40,9 @@ export class EvidenceService {
 
     if (!evidence.isValid) throw new BadRequestException()
 
-    const participants = evidence.participants as string
-    evidence.participants = await this.userService.getUsers(participants.trimEnd().split(', '))
+    const participants = evidence.participants.trimEnd().split(/[ ,]+/)
+    const users = assigness ? assigness : participants
+    evidence.participants = await this.userService.getUsers(users)
 
     const date = this.evidenceRegex.date.exec(description)
     evidence.date = date ? date[1] : null

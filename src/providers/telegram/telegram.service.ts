@@ -5,7 +5,6 @@ import { HttpService } from '@nestjs/axios'
 import random from 'random-bigint'
 import { Evidence } from 'src/interface/evidence.interface'
 import { StringSession } from 'telegram/sessions'
-import { ScreenshotService } from '../screenshot/screenshot.service'
 
 @Injectable()
 export class TelegramService {
@@ -14,10 +13,7 @@ export class TelegramService {
   private bot = this.configService.get('telegram.bot')
   private client: TelegramClient
 
-  constructor(
-    private configService: ConfigService,
-    private httpService: HttpService,
-  ) {
+  constructor(private configService: ConfigService, private httpService: HttpService) {
     const stringSession = new StringSession(this.configService.get('telegram.user.session'))
 
     this.client = new TelegramClient(
@@ -92,7 +88,7 @@ ${evidence.date ? `Tanggal: ${evidence.date}` : ''}
   public formatDefault = (evidence: Evidence): string => {
     const message = `
 /lapor ${evidence.project} | ${evidence.title}
-Peserta: ${evidence.participants}
+Peserta: ${evidence.participants.join('  ')}
 Lampiran: ${evidence.url}
 ${evidence.date ? `Tanggal: ${evidence.date}` : ''}
 `
