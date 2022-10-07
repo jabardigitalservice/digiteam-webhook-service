@@ -13,6 +13,7 @@ export class UserService {
   ) {}
 
   private cacheKey = 'telegram-user'
+  private cacheKeyBackup = 'telegram-user-backup'
 
   private searchTelegramUsers = (
     telegramUsers: TelegramUser[],
@@ -52,19 +53,19 @@ export class UserService {
       const response = await this.httpService.axiosRef.get(
         this.configService.get('url.telegramUser')
       )
-      if (response.status !== 200) return false
-      await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), { ttl: 0 })
+      await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), {
+        ttl: this.configService.get('redis.ttl') * 60000,
+      })
+      await this.cache.set(this.cacheKeyBackup, JSON.stringify(response.data.rows), { ttl: 0 })
       return true
     } catch (error) {
-      return false
+      await this.cache.set(this.cacheKey, await this.cache.get(this.cacheKeyBackup), { ttl: 1440 })
+      return true
     }
   }
 
   async getUsers(participants: string[]) {
-    if (!(await this.cache.get(this.cacheKey))) {
-      const isSuccess = await this.setUsers()
-      if (!isSuccess) return participants
-    }
+    if (!(await this.cache.get(this.cacheKey))) await this.setUsers()
 
     const telegramUser: TelegramUser[] = JSON.parse(await this.cache.get(this.cacheKey))
 

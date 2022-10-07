@@ -26,6 +26,7 @@ export default () => ({
   redis: {
     host: process.env.REDIS_HOST,
     port: parseInt(process.env.REDIS_PORT),
+    ttl: parseInt(process.env.REDIS_TTL) || 10, // minute
   },
   elastic: {
     cloudID: process.env.ELASTIC_CLOUD_ID,
