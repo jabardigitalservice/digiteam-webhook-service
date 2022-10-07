@@ -42,7 +42,7 @@ export class UserService {
     for (const participant of participants) {
       const isFound = false
       const telegramUser = this.searchTelegramUsers(telegramUsers, isFound, participant)
-      if (!telegramUser.isFound) users.push(participant)
+      if (!telegramUser.isFound) users.push(participant.replace(' ', ''))
       else users.push(telegramUser.result)
     }
     return users
