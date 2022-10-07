@@ -1,6 +1,5 @@
 import { HttpModule } from '@nestjs/axios'
 import { CacheModule, Module } from '@nestjs/common'
-import { ScreenshotModule } from '../screenshot/screenshot.module'
 import { TelegramService } from './telegram.service'
 import { UserService } from './user.service'
 import { ConfigService } from '@nestjs/config'

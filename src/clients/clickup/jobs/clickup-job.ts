@@ -1,11 +1,10 @@
 import { Process, Processor } from '@nestjs/bull'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bull'
+import moment from 'moment'
 import { ClickupTaskStatusUpdated } from 'src/interface/clickup-task-status-updated.interface'
-import { Evidence } from 'src/interface/evidence.interface'
 import { ElasticService } from 'src/providers/elastic/elastic.service'
-import { TelegramService } from 'src/providers/telegram/telegram.service'
 import { ClickupService } from '../clickup.service'
 import { Clickup } from '../interface/clickup.interface'
 
@@ -30,6 +29,7 @@ export class ClickupJob {
     const clickup: Clickup = {
       url: task.url,
       description: task.description,
+      createdAt: moment().toISOString(),
     }
 
     const evidence = await this.clickupService.getEvidence(
