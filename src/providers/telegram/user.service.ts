@@ -49,16 +49,17 @@ export class UserService {
   }
 
   private setUsers = async () => {
+    const ttl = this.configService.get('redis.ttl') * 60000
     try {
       const response = await this.httpService.axiosRef.get(
         this.configService.get('url.telegramUser')
       )
       await this.cache.set(this.cacheKey, JSON.stringify(response.data.rows), {
-        ttl: this.configService.get('redis.ttl') * 60000,
+        ttl,
       })
       await this.cache.set(this.cacheKeyBackup, JSON.stringify(response.data.rows), { ttl: 0 })
     } catch (error) {
-      await this.cache.set(this.cacheKey, await this.cache.get(this.cacheKeyBackup), { ttl: 1440 })
+      await this.cache.set(this.cacheKey, await this.cache.get(this.cacheKeyBackup), { ttl })
     }
   }
 
