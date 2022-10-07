@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config'
 import { ClickupTask } from 'src/interface/clickup-task.interface'
 import { Evidence } from 'src/interface/evidence.interface'
 import { EvidenceService } from 'src/providers/evidence/evidence.service'
+import { ScreenshotService } from 'src/providers/screenshot/screenshot.service'
+import { TelegramService } from 'src/providers/telegram/telegram.service'
 import { Clickup } from './interface/clickup.interface'
 
 @Injectable()
@@ -14,7 +16,9 @@ export class ClickupService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
-    private evidenceService: EvidenceService
+    private evidenceService: EvidenceService,
+    private telegramService: TelegramService,
+    private screenshotService: ScreenshotService
   ) {}
 
   GetTaskByID = async (id: string): Promise<ClickupTask> => {
@@ -40,5 +44,20 @@ export class ClickupService {
     evidence.source = clickup
     evidence.url = clickup.url
     return evidence
+  }
+
+  public sendEvidence = async (evidence: Evidence): Promise<void> => {
+    const message = this.telegramService.formatDefault(evidence)
+    const url = evidence.screenshot ? evidence.screenshot : evidence.url
+
+    const picture = await this.screenshotService.screenshot(url)
+    const messageId = await this.telegramService.sendPhotoWithBot(picture)
+
+    if (picture && messageId) {
+      this.telegramService.sendMessageWithUser(message, messageId)
+      return
+    }
+
+    this.telegramService.sendMessageWithBot(message)
   }
 }

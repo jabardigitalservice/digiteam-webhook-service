@@ -13,7 +13,6 @@ import type { ClientOpts } from 'redis'
       timeout: 5000,
       maxRedirects: 5,
     }),
-    ScreenshotModule,
     CacheModule.registerAsync<ClientOpts>({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({

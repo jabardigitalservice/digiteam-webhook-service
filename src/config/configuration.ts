@@ -38,6 +38,7 @@ export default () => ({
     screenshot: process.env.URL_SCREENSHOT,
     telegram: process.env.URL_TELEGRAM,
     telegramUser: process.env.URL_TELEGRAM_USER,
+    imageExt: 'jpg|png|jpeg',
     clickup: process.env.URL_CLICKUP,
   },
 })

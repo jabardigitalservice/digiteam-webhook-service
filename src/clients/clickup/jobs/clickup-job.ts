@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bull'
 import { ClickupTaskStatusUpdated } from 'src/interface/clickup-task-status-updated.interface'
+import { Evidence } from 'src/interface/evidence.interface'
 import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { TelegramService } from 'src/providers/telegram/telegram.service'
 import { ClickupService } from '../clickup.service'
@@ -13,7 +14,6 @@ import { Clickup } from '../interface/clickup.interface'
 export class ClickupJob {
   constructor(
     private clickupService: ClickupService,
-    private telegramService: TelegramService,
     private elasticService: ElasticService,
     private configService: ConfigService
   ) {}
@@ -33,7 +33,7 @@ export class ClickupJob {
     }
 
     const evidence = await this.clickupService.getEvidence(clickup)
-    this.telegramService.sendEvidence(evidence)
+    this.clickupService.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
 
     return job.finished()

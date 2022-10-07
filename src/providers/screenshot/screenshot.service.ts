@@ -13,7 +13,7 @@ export class ScreenshotService {
     return fileTypes.test(path.extname(url).toLowerCase())
   }
 
-  screenshot = async (url: string): Promise<string | null> => {
+  screenshot = async (url: string): Promise<string> => {
     if (this.isUrlImage(url)) return url
 
     try {

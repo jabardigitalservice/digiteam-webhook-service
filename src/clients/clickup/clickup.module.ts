@@ -5,6 +5,7 @@ import { ClickupJob } from './jobs/clickup-job'
 import { EvidenceModule } from 'src/providers/evidence/evidence.module'
 import { TelegramModule } from 'src/providers/telegram/telegram.module'
 import { ElasticModule } from 'src/providers/elastic/elastic.module'
+import { ScreenshotModule } from 'src/providers/screenshot/screenshot.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ElasticModule } from 'src/providers/elastic/elastic.module'
     EvidenceModule,
     TelegramModule,
     ElasticModule,
+    ScreenshotModule,
   ],
   providers: [ClickupService, ClickupJob],
 })

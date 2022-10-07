@@ -17,7 +17,6 @@ export class TelegramService {
   constructor(
     private configService: ConfigService,
     private httpService: HttpService,
-    private screenshotService: ScreenshotService
   ) {
     const stringSession = new StringSession(this.configService.get('telegram.user.session'))
 
@@ -29,39 +28,39 @@ export class TelegramService {
     )
   }
 
-  public sendMessageWithBot = async (bot: string, chatId: number, message: string) => {
+  public sendMessageWithBot = async (message: string) => {
     if (!message) return
-    const url = `${this.url}/${bot}/sendMessage`
+    const url = `${this.url}/${this.bot}/sendMessage`
     this.httpService.axiosRef.post(url, {
-      chat_id: chatId,
+      chat_id: this.chatID,
       text: message,
     })
   }
 
-  public sendPhotoWithBot = async (
-    bot: string,
-    chatId: number,
-    picture?: string
-  ): Promise<number> => {
+  public sendPhotoWithBot = async (picture?: string): Promise<number> => {
     if (!picture) return null
 
-    const response = await this.httpService.axiosRef.postForm(`${this.url}/${bot}/sendPhoto`, {
-      chat_id: chatId,
-      photo: picture,
-    })
-
-    if (response.status !== 200) return null
-
-    const { message_id: messageId } = response.data.result
-    return Number(messageId)
+    try {
+      const response = await this.httpService.axiosRef.postForm(
+        `${this.url}/${this.bot}/sendPhoto`,
+        {
+          chat_id: this.chatID,
+          photo: picture,
+        }
+      )
+      const { message_id: messageId } = response.data.result
+      return Number(messageId)
+    } catch (error) {
+      return null
+    }
   }
 
-  public sendMessageWithUser = async (chatId: number, message: string, replyToMsgId?: number) => {
+  public sendMessageWithUser = async (message: string, replyToMsgId?: number) => {
     if (!message) return
     if (this.client.disconnected) await this.client.connect()
     this.client.invoke(
       new Api.messages.SendMessage({
-        peer: chatId,
+        peer: this.chatID,
         message,
         randomId: random(128),
         noWebpage: true,
@@ -90,20 +89,13 @@ ${evidence.date ? `Tanggal: ${evidence.date}` : ''}
     return evidence.participants.slice(1).length ? message : null
   }
 
-  public sendEvidence = async (evidence: Evidence): Promise<void> => {
-    const messageByCreated = this.formatByCreated(evidence)
-    const messageByReview = this.formatByReview(evidence)
-    const url = evidence.screenshot ? evidence.screenshot : evidence.url
-    const picture = await this.screenshotService.screenshot(url)
-    const messageId = await this.sendPhotoWithBot(this.bot, this.chatID, picture)
-
-    if (picture && messageId) {
-      this.sendMessageWithUser(this.chatID, messageByCreated, messageId)
-      this.sendMessageWithUser(this.chatID, messageByReview, messageId)
-      return
-    }
-
-    this.sendMessageWithBot(this.bot, this.chatID, messageByCreated)
-    this.sendMessageWithBot(this.bot, this.chatID, messageByReview)
+  public formatDefault = (evidence: Evidence): string => {
+    const message = `
+/lapor ${evidence.project} | ${evidence.title}
+Peserta: ${evidence.participants}
+Lampiran: ${evidence.url}
+${evidence.date ? `Tanggal: ${evidence.date}` : ''}
+`
+    return evidence.participants.length ? message : null
   }
 }
