@@ -22,8 +22,8 @@ export class ClickupJob {
   async eventMerge(job: Job) {
     const payload = job.data as ClickupTaskStatusUpdated
     const task = await this.clickupService.GetTaskByID(payload.task_id)
-
-    const statuses = this.configService.get('click.statuses') as string[]
+    
+    const statuses = this.configService.get('clickup.statuses') as string[]
     const status = task.status.status.toUpperCase().trim()
     if (!statuses.includes(status)) return job.remove()
 
