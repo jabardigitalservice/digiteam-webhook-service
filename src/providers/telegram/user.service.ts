@@ -57,10 +57,8 @@ export class UserService {
         ttl: this.configService.get('redis.ttl') * 60000,
       })
       await this.cache.set(this.cacheKeyBackup, JSON.stringify(response.data.rows), { ttl: 0 })
-      return true
     } catch (error) {
       await this.cache.set(this.cacheKey, await this.cache.get(this.cacheKeyBackup), { ttl: 1440 })
-      return true
     }
   }
 
