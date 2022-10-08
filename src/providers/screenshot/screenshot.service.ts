@@ -14,7 +14,7 @@ export class ScreenshotService {
   }
 
   screenshot = async (url: string): Promise<string> => {
-    if (this.isUrlImage(url)) return url
+    if (!url || this.isUrlImage(url)) return url
 
     try {
       const response = await this.httpService.axiosRef.post(

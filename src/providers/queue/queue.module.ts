@@ -25,6 +25,9 @@ import { QueueService } from './queue.service'
     BullModule.registerQueue({
       name: 'clickup',
     }),
+    BullModule.registerQueue({
+      name: 'qase',
+    }),
   ],
   providers: [QueueService],
   exports: [QueueService],

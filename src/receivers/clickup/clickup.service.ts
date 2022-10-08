@@ -7,6 +7,6 @@ export class ClickupService {
   constructor(private queue: QueueService) {}
 
   taskStatusUpdated = (body: ClickupTaskStatusUpdated) => {
-    return this.queue.eventTaskStatusUpdated(body)
+    return this.queue.eventTaskStatusUpdatedClickup(body)
   }
 }

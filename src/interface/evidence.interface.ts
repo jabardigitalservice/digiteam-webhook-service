@@ -5,6 +5,7 @@ export interface Evidence {
   url: string
   date?: string
   screenshot?: string
+  attachment?: string
   isValid?: string
   source?: any
 }

@@ -15,6 +15,7 @@ export class EvidenceService {
     participants: regex('participants: (.+)'),
     date: regex('date: (.+)'),
     screenshot: regex('screenshot: (.+)'),
+    attachment: regex('attachment: (.+)'),
   }
 
   private validateEvidence = (evidence: any) => {
@@ -41,6 +42,7 @@ export class EvidenceService {
       participants: this.evidenceRegex.participants.exec(description),
       date: this.evidenceRegex.date.exec(description),
       screenshot: this.evidenceRegex.screenshot.exec(description),
+      attachment: this.evidenceRegex.attachment.exec(description),
     })
 
     if (!evidence.isValid) throw new BadRequestException()

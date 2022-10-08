@@ -6,6 +6,8 @@ import { GitlabModule } from './receivers/gitlab/gitlab.module'
 import { EvidenceModule } from './providers/evidence/evidence.module'
 import { ClickupModule as ReceiverClickupModule } from './receivers/clickup/clickup.module'
 import { ClickupModule } from './clients/clickup/clickup.module'
+import { QaseModule as ReceiverQaseModule } from './receivers/qase/qase.module'
+import { QaseModule } from './clients/qase/qase.module'
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ClickupModule } from './clients/clickup/clickup.module'
     EvidenceModule,
     ReceiverClickupModule,
     ClickupModule,
+    ReceiverQaseModule,
+    QaseModule,
   ],
   providers: [],
 })
