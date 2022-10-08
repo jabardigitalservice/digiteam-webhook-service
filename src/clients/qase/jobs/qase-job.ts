@@ -2,7 +2,7 @@ import { Process, Processor } from '@nestjs/bull'
 import { Injectable } from '@nestjs/common'
 import { Job } from 'bull'
 import moment from 'moment'
-import { QaseCaseCreated } from 'src/interface/qase-case-created.interface'
+import { QaseTest } from 'src/interface/qase-test.interface'
 import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { Qase } from '../interface/qase.interface'
 import { QaseService } from '../qase.service'
@@ -12,9 +12,9 @@ import { QaseService } from '../qase.service'
 export class QaseJob {
   constructor(private qaseService: QaseService, private elasticService: ElasticService) {}
 
-  @Process('event-case-created')
+  @Process('event-qase')
   async eventMerge(job: Job) {
-    const payload = job.data as QaseCaseCreated
+    const payload = job.data as QaseTest
     const qase: Qase = {
       description: payload.payload.description,
       createdAt: moment().toISOString(),

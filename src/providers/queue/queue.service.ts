@@ -32,7 +32,7 @@ export class QueueService {
     this.clickup.add('event-task-status-updated', data, this.queueOptions)
   }
 
-  eventCaseCreatedQase = (data: any) => {
-    this.qase.add('event-case-created', data, this.queueOptions)
+  eventQase = (data: any) => {
+    this.qase.add('event-qase', data, this.queueOptions)
   }
 }

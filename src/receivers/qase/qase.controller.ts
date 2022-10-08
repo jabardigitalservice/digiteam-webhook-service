@@ -8,10 +8,10 @@ import { QaseService } from './qase.service'
 export class QaseController {
   constructor(private config: ConfigService, private service: QaseService) {}
 
-  @Post('/case-created/:secret')
-  async caseCreated(@Body() body: any, @Param('secret') secret: string, @Res() res: Response) {
+  @Post('/:secret')
+  async qase(@Body() body: any, @Param('secret') secret: string, @Res() res: Response) {
     verifySecretKey(secret, this.config.get('app.key'))
-    this.service.caseCreated(body)
+    this.service.qase(body)
     return res.send('Success')
   }
 }
