@@ -28,8 +28,8 @@ export class ElasticService {
       if (!participant) continue
       this.create({
         project: evidence.project.trimEnd(),
-        participant,    
-        ...evidence
+        participant,
+        ...evidence,
       })
     }
   }

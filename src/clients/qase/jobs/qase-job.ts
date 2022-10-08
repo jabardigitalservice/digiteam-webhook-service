@@ -18,6 +18,8 @@ export class QaseJob {
     const qase: Qase = {
       description: payload.payload.description,
       createdAt: moment().toISOString(),
+      project_code: payload.project_code,
+      event_name: payload.event_name,
     }
 
     const evidence = await this.qaseService.getEvidence(qase)

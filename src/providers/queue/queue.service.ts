@@ -17,7 +17,7 @@ export class QueueService {
     removeOnFail: true,
     removeOnComplete: true,
     timeout: 30000,
-    lifo: true
+    lifo: true,
   }
 
   eventMergeGithub = (data: any) => {
