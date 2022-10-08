@@ -22,7 +22,8 @@ export class GitService {
   }
 
   public getEvidence = async (git: Git, source: string): Promise<Evidence> => {
-    const evidence = await this.evidenceService.GetEvidence(git.description)
+    const evidence = await this.evidenceService.getEvidence(git.description)
+    delete git.description
     evidence.source = {
       ...git,
       source: source,

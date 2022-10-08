@@ -66,13 +66,16 @@ export class TelegramService {
   }
 
   public formatByCreated = (evidence: Evidence): string => {
+    const participants = evidence.participants.length ? evidence.participants[0] : ''
+    const date = evidence.date ? `Tanggal: ${evidence.date}` : ''
+
     const message = `
   /lapor ${evidence.project} | ${evidence.title}
-Peserta: ${evidence.participants[0]}
+Peserta: ${participants}
 Lampiran: ${evidence.url}
-${evidence.date ? `Tanggal: ${evidence.date}` : ''}
+${date}
 `
-    return evidence.participants[0] ? message : null
+    return message
   }
 
   public formatByReview = (evidence: Evidence): string => {
@@ -86,12 +89,14 @@ ${evidence.date ? `Tanggal: ${evidence.date}` : ''}
   }
 
   public formatDefault = (evidence: Evidence): string => {
+    const date = evidence.date ? `Tanggal: ${evidence.date}` : ''
+
     const message = `
 /lapor ${evidence.project} | ${evidence.title}
 Peserta: ${evidence.participants.join('  ')}
 Lampiran: ${evidence.url}
-${evidence.date ? `Tanggal: ${evidence.date}` : ''}
+${date}
 `
-    return evidence.participants.length ? message : null
+    return message
   }
 }

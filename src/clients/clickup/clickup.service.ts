@@ -21,7 +21,7 @@ export class ClickupService {
     private screenshotService: ScreenshotService
   ) {}
 
-  GetTaskByID = async (id: string): Promise<ClickupTask> => {
+  public getTaskByID = async (id: string): Promise<ClickupTask> => {
     try {
       const response = await this.httpService.axiosRef.get(
         `${this.url}/task/${id}?custom_task_ids=true&team_id=${this.teamID}&include_subtasks=true`,
@@ -40,7 +40,7 @@ export class ClickupService {
   }
 
   public getEvidence = async (clickup: Clickup, assignees: string[]): Promise<Evidence> => {
-    const evidence = await this.evidenceService.GetEvidence(clickup.description, assignees)
+    const evidence = await this.evidenceService.getEvidence(clickup.description, assignees)
     delete clickup.description
     evidence.source = {
       ...clickup,

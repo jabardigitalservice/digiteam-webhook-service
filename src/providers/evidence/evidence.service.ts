@@ -6,6 +6,9 @@ import { UserService } from '../telegram/user.service'
 @Injectable()
 export class EvidenceService {
   constructor(private userService: UserService) {}
+
+  private required = ['project', 'title']
+
   private evidenceRegex = {
     project: regex('project: (.+)'),
     title: regex('title: (.+)'),
@@ -17,37 +20,37 @@ export class EvidenceService {
   private validateEvidence = (evidence: any) => {
     let isValid = true
     for (const item in evidence) {
-      if (evidence[item] === null) {
+      const validation = evidence[item] === null && this.required.includes(item)
+      if (validation) {
         isValid = false
         break
       }
-      evidence[item] = evidence[item][1]
+
+      evidence[item] = evidence[item] ? evidence[item][1] : null
     }
+
     evidence.isValid = isValid
 
     return evidence
   }
 
-  public GetEvidence = async (
-    description: string,
-    assigness: string[] = null
-  ): Promise<Evidence> => {
+  public getEvidence = async (description: string, assigness: string[] = []): Promise<Evidence> => {
     const evidence = this.validateEvidence({
       project: this.evidenceRegex.project.exec(description),
       title: this.evidenceRegex.title.exec(description),
       participants: this.evidenceRegex.participants.exec(description),
+      date: this.evidenceRegex.date.exec(description),
+      screenshot: this.evidenceRegex.screenshot.exec(description),
     })
 
     if (!evidence.isValid) throw new BadRequestException()
 
-    const participants = evidence.participants.trimEnd().split(/[ ,]+/)
-    const users = assigness ? assigness : participants
-    evidence.participants = await this.userService.getUsers(users)
+    evidence.participants = evidence.participants
+      ? evidence.participants.trimEnd().split(/[ ,]+/)
+      : []
 
-    const date = this.evidenceRegex.date.exec(description)
-    evidence.date = date ? date[1] : null
-    const screenshot = this.evidenceRegex.screenshot.exec(description)
-    evidence.screenshot = screenshot ? screenshot[1] : null
+    const users = assigness.length ? assigness : evidence.participants
+    evidence.participants = await this.userService.getUsers(users)
 
     return evidence
   }
