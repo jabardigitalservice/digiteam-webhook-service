@@ -7,7 +7,8 @@ export class QueueService {
   constructor(
     @InjectQueue('gitlab') private gitlab: Queue,
     @InjectQueue('github') private github: Queue,
-    @InjectQueue('clickup') private clickup: Queue
+    @InjectQueue('clickup') private clickup: Queue,
+    @InjectQueue('qase') private qase: Queue
   ) {}
 
   queueOptions: JobOptions = {
@@ -16,6 +17,7 @@ export class QueueService {
     removeOnFail: true,
     removeOnComplete: true,
     timeout: 30000,
+    lifo: true
   }
 
   eventMergeGithub = (data: any) => {
@@ -31,6 +33,6 @@ export class QueueService {
   }
 
   eventCaseCreatedQase = (data: any) => {
-    this.clickup.add('event-case-created', data, this.queueOptions)
+    this.qase.add('event-case-created', data, this.queueOptions)
   }
 }
