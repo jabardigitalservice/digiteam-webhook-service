@@ -9,6 +9,11 @@ import { schema } from './config.schema'
       isGlobal: true,
       load: [configuration],
       validationSchema: schema,
+      cache: true,
+      validationOptions: {
+        allowUnknown: false,
+        abortEarly: true,
+      },
     }),
   ],
   providers: [ConfigService],
