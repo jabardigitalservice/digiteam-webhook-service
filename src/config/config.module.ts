@@ -10,10 +10,6 @@ import { schema } from './config.schema'
       load: [configuration],
       validationSchema: schema,
       cache: true,
-      validationOptions: {
-        allowUnknown: false,
-        abortEarly: true,
-      },
     }),
   ],
   providers: [ConfigService],
