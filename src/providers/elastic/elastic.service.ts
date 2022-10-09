@@ -28,6 +28,7 @@ export class ElasticService {
       if (!participant) continue
       this.create({
         project: evidence.project.trimEnd(),
+        createdAt: moment().toISOString(),
         participant,
         ...evidence,
       })

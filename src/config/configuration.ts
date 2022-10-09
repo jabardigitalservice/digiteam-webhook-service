@@ -1,6 +1,17 @@
 import { config } from 'dotenv'
+import { TelegramClient } from 'telegram'
+import { StringSession } from 'telegram/sessions'
 
 config()
+
+// init user telegram
+const stringSession = new StringSession(process.env.TELEGRAM_USER_SESSION)
+const user = new TelegramClient(
+  stringSession,
+  Number(parseInt(process.env.TELEGRAM_USER_ID)),
+  process.env.TELEGRAM_USER_HASH,
+  {}
+)
 
 export default () => ({
   app: {
@@ -17,11 +28,7 @@ export default () => ({
   telegram: {
     bot: process.env.TELEGRAM_BOT,
     chatID: process.env.TELEGRAM_CHAT_ID,
-    user: {
-      id: parseInt(process.env.TELEGRAM_USER_ID),
-      hash: process.env.TELEGRAM_USER_HASH,
-      session: process.env.TELEGRAM_USER_SESSION,
-    },
+    user,
   },
   redis: {
     host: process.env.REDIS_HOST,

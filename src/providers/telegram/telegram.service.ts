@@ -11,18 +11,9 @@ export class TelegramService {
   private url = this.configService.get('url.telegram')
   private chatID = this.configService.get('telegram.chatID')
   private bot = this.configService.get('telegram.bot')
-  private client: TelegramClient
+  private user: TelegramClient = this.configService.get('telegram.user')
 
-  constructor(private configService: ConfigService, private httpService: HttpService) {
-    const stringSession = new StringSession(this.configService.get('telegram.user.session'))
-
-    this.client = new TelegramClient(
-      stringSession,
-      Number(this.configService.get('telegram.user.id')),
-      this.configService.get('telegram.user.hash'),
-      {}
-    )
-  }
+  constructor(private configService: ConfigService, private httpService: HttpService) {}
 
   public sendMessageWithBot = async (message: string) => {
     if (!message) return
@@ -53,8 +44,8 @@ export class TelegramService {
 
   public sendMessageWithUser = async (message: string, replyToMsgId?: number) => {
     if (!message) return
-    if (this.client.disconnected) await this.client.connect()
-    this.client.invoke(
+    if (this.user.disconnected) await this.user.connect()
+    this.user.invoke(
       new Api.messages.SendMessage({
         peer: this.chatID,
         message,

@@ -30,7 +30,6 @@ export class ClickupJob {
     const clickup: Clickup = {
       url: task.url,
       description: task.description,
-      createdAt: moment().toISOString(),
     }
 
     const evidence = await this.clickupService.getEvidence(clickup, assignees)

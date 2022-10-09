@@ -20,7 +20,6 @@ export class GithubJob {
       url: payload.pull_request.html_url,
       description: payload.pull_request.body,
       createdBy: payload.pull_request.user.login,
-      createdAt: moment().toISOString(),
     }
 
     this.gitService.createEvidence(git, 'github')

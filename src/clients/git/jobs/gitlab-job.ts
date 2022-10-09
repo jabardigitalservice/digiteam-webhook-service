@@ -20,7 +20,6 @@ export class GitlabJob {
       url: payload.object_attributes.url,
       description: payload.object_attributes.description,
       createdBy: payload.user.name,
-      createdAt: moment().toISOString(),
     }
 
     this.gitService.createEvidence(git, 'gitlab')
