@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Evidence } from 'src/interface/evidence.interface'
+import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { EvidenceService } from 'src/providers/evidence/evidence.service'
 import { ScreenshotService } from 'src/providers/screenshot/screenshot.service'
 import { TelegramService } from 'src/providers/telegram/telegram.service'
@@ -10,8 +11,15 @@ export class QaseService {
   constructor(
     private evidenceService: EvidenceService,
     private telegramService: TelegramService,
-    private screenshotService: ScreenshotService
+    private screenshotService: ScreenshotService,
+    private elasticService: ElasticService
   ) {}
+
+  send = async (qase: Qase) => {
+    const evidence = await this.getEvidence(qase)
+    this.sendEvidence(evidence)
+    this.elasticService.createElasticEvidence(evidence)
+  }
 
   public getEvidence = async (qase: Qase): Promise<Evidence> => {
     const evidence = await this.evidenceService.getEvidence(qase.description)
