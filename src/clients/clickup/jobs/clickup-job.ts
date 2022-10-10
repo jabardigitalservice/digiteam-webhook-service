@@ -2,23 +2,18 @@ import { Process, Processor } from '@nestjs/bull'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bull'
-import moment from 'moment'
+import { ClickupTaskCommentPosted } from 'src/interface/clickup-task-comment-posted.interface'
 import { ClickupTaskStatusUpdated } from 'src/interface/clickup-task-status-updated.interface'
-import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { ClickupService } from '../clickup.service'
 import { Clickup } from '../interface/clickup.interface'
 
 @Injectable()
 @Processor('clickup')
 export class ClickupJob {
-  constructor(
-    private clickupService: ClickupService,
-    private elasticService: ElasticService,
-    private configService: ConfigService
-  ) {}
+  constructor(private clickupService: ClickupService, private configService: ConfigService) {}
 
   @Process('event-task-status-updated')
-  async eventMerge(job: Job) {
+  async eventTaskStatusUpdated(job: Job) {
     const payload = job.data as ClickupTaskStatusUpdated
     const task = await this.clickupService.getTaskByID(payload.task_id)
 
@@ -30,11 +25,26 @@ export class ClickupJob {
     const clickup: Clickup = {
       url: task.url,
       description: task.description,
+      event: payload.event,
     }
 
-    const evidence = await this.clickupService.getEvidence(clickup, assignees)
-    this.clickupService.sendEvidence(evidence)
-    this.elasticService.createElasticEvidence(evidence)
+    this.clickupService.send(clickup, assignees)
+
+    return job.finished()
+  }
+
+  @Process('event-task-comment-posted')
+  async eventTaskCommentPosted(job: Job) {
+    const payload = job.data as ClickupTaskCommentPosted
+    const task = await this.clickupService.getTaskByID(payload.task_id)
+
+    const clickup: Clickup = {
+      url: task.url,
+      description: payload.history_items[0].comment.text_content.replace('@', ''),
+      event: payload.event,
+    }
+
+    this.clickupService.send(clickup)
 
     return job.finished()
   }
