@@ -1,7 +1,6 @@
 import { Process, Processor } from '@nestjs/bull'
 import { Injectable } from '@nestjs/common'
 import { Job } from 'bull'
-import moment from 'moment'
 import { GithubMerge } from 'src/interface/github-merge.interface'
 import { GitService } from '../git.service'
 import { Git } from '../interface/git.interface'
@@ -22,7 +21,7 @@ export class GithubJob {
       createdBy: payload.pull_request.user.login,
     }
 
-    this.gitService.createEvidence(git, 'github')
+    this.gitService.send(git, 'github')
     return job.finished()
   }
 }

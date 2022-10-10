@@ -18,4 +18,15 @@ export class ClickupController {
     this.service.taskStatusUpdated(body)
     return res.send('Success')
   }
+
+  @Post('/task-comment-posted/:secret')
+  async taskCommentPosted(
+    @Body() body: any,
+    @Param('secret') secret: string,
+    @Res() res: Response
+  ) {
+    verifySecretKey(secret, this.config.get('app.key'))
+    this.service.taskCommentPosted(body)
+    return res.send('Success')
+  }
 }

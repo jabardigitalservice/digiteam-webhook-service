@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ClickupTask } from 'src/interface/clickup-task.interface'
 import { Evidence } from 'src/interface/evidence.interface'
+import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { EvidenceService } from 'src/providers/evidence/evidence.service'
 import { ScreenshotService } from 'src/providers/screenshot/screenshot.service'
 import { TelegramService } from 'src/providers/telegram/telegram.service'
@@ -18,8 +19,15 @@ export class ClickupService {
     private configService: ConfigService,
     private evidenceService: EvidenceService,
     private telegramService: TelegramService,
-    private screenshotService: ScreenshotService
+    private screenshotService: ScreenshotService,
+    private elasticService: ElasticService
   ) {}
+
+  public send = async (clickup: Clickup, assignees: string[] = []) => {
+    const evidence = await this.getEvidence(clickup, assignees)
+    this.sendEvidence(evidence)
+    this.elasticService.createElasticEvidence(evidence)
+  }
 
   public getTaskByID = async (id: string): Promise<ClickupTask> => {
     try {

@@ -15,7 +15,7 @@ export class GitService {
     private screenshotService: ScreenshotService
   ) {}
 
-  createEvidence = async (git: Git, source: string) => {
+  send = async (git: Git, source: string) => {
     const evidence = await this.getEvidence(git, source)
     this.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
