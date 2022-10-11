@@ -2,7 +2,6 @@ import { Process, Processor } from '@nestjs/bull'
 import { Injectable } from '@nestjs/common'
 import { Job } from 'bull'
 import { QaseTest } from 'src/interface/qase-test.interface'
-import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { Qase } from '../interface/qase.interface'
 import { QaseService } from '../qase.service'
 
