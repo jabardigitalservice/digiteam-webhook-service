@@ -4,7 +4,6 @@ import { Api, TelegramClient } from 'telegram'
 import { HttpService } from '@nestjs/axios'
 import random from 'random-bigint'
 import { Evidence } from 'src/interface/evidence.interface'
-import { StringSession } from 'telegram/sessions'
 
 @Injectable()
 export class TelegramService {
@@ -24,7 +23,7 @@ export class TelegramService {
     })
   }
 
-  public sendPhotoWithBot = async (picture?: string): Promise<number> => {
+  public sendPhotoWithBot = async (picture: string): Promise<number> => {
     if (!picture) return null
 
     try {
