@@ -29,6 +29,7 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.1.2",
     "bull": "^4.9.0",
     "cache-manager": "^3.6.3",
     "cache-manager-redis-store": "^2.0.0",
