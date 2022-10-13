@@ -36,15 +36,19 @@ export class ClickupJob {
   @Process('event-task-comment-posted')
   async eventTaskCommentPosted(job: Job) {
     const payload = job.data as ClickupTaskCommentPosted
+
+    const description = payload.history_items[0].comment.text_content
+    const assignees = this.clickupService.getAssigneesEventComment(description)
+
     const task = await this.clickupService.getTaskByID(payload.task_id)
 
     const clickup: Clickup = {
       url: task.url,
-      description: payload.history_items[0].comment.text_content.replace('@', ''),
+      description,
       event: payload.event,
     }
 
-    this.clickupService.send(clickup)
+    this.clickupService.send(clickup, assignees)
 
     return job.finished()
   }

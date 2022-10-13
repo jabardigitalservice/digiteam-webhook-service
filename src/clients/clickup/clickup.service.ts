@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { regex } from 'src/common/helpers/regex'
 import { ClickupTask } from 'src/interface/clickup-task.interface'
 import { Evidence } from 'src/interface/evidence.interface'
 import { ElasticService } from 'src/providers/elastic/elastic.service'
@@ -49,7 +50,6 @@ export class ClickupService {
 
   public getEvidence = async (clickup: Clickup, assignees: string[]): Promise<Evidence> => {
     const evidence = await this.evidenceService.getEvidence(clickup.description, assignees)
-    delete clickup.description
     evidence.source = {
       ...clickup,
       source: 'clickup',
@@ -71,5 +71,18 @@ export class ClickupService {
     }
 
     this.telegramService.sendMessageWithBot(message)
+  }
+
+  public getAssigneesEventComment = (description: string) => {
+    let participants: any = regex('participants: (.+)').exec(description)
+    participants = participants ? participants[1] : []
+
+    const assignees = []
+    for (const participant of participants.split('@')) {
+      if (participant.trim().length === 0) continue
+      assignees.push(participant.trim())
+    }
+
+    return assignees
   }
 }

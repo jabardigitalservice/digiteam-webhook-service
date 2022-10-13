@@ -23,7 +23,6 @@ export class QaseService {
 
   public getEvidence = async (qase: Qase): Promise<Evidence> => {
     const evidence = await this.evidenceService.getEvidence(qase.description)
-    delete qase.description
     evidence.source = {
       ...qase,
       source: 'qase',
