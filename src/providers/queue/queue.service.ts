@@ -15,6 +15,9 @@ export class QueueService {
     delay: 10000,
     attempts: 0,
     removeOnFail: true,
+    removeOnComplete: {
+      age: 24 * 3600
+    },
     timeout: 30000,
     lifo: true,
   }
