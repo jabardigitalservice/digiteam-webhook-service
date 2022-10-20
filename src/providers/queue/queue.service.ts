@@ -13,9 +13,8 @@ export class QueueService {
 
   queueOptions: JobOptions = {
     delay: 10000,
-    attempts: 1,
+    attempts: 0,
     removeOnFail: true,
-    removeOnComplete: true,
     timeout: 30000,
     lifo: true,
   }
