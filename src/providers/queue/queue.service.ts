@@ -17,7 +17,7 @@ export class QueueService {
     removeOnFail: true,
     removeOnComplete: {
       age: 8 * 3600,
-      count: 3000
+      count: 3000,
     },
     timeout: 30000,
     lifo: true,
@@ -25,7 +25,7 @@ export class QueueService {
 
   randomDelayQueueOptions = () => {
     const jobOptions = this.queueOptions
-    jobOptions.delay = this.queueOptions.delay * Math.floor(Math.random() * 30)
+    jobOptions.delay = Math.floor(jobOptions.delay * (Math.random() * 5))
     return jobOptions
   }
 

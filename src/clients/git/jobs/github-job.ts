@@ -21,7 +21,7 @@ export class GithubJob {
       createdBy: payload.pull_request.user.login,
     }
 
-    this.gitService.send(git, 'github')
-    return job.finished()
+    await this.gitService.send(git, 'github')
+    return job.moveToCompleted()
   }
 }

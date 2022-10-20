@@ -21,7 +21,7 @@ export class GitlabJob {
       createdBy: payload.user.name,
     }
 
-    this.gitService.send(git, 'gitlab')
-    return job.finished()
+    await this.gitService.send(git, 'gitlab')
+    return job.moveToCompleted()
   }
 }

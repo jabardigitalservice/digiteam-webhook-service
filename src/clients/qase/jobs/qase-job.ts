@@ -21,7 +21,7 @@ export class QaseJob {
       event_name: payload.event_name,
     }
 
-    this.qaseService.send(qase)
-    return job.finished()
+    await this.qaseService.send(qase)
+    return job.moveToCompleted()
   }
 }

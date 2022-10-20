@@ -28,9 +28,8 @@ export class ClickupJob {
       event: payload.event,
     }
 
-    this.clickupService.send(clickup, assignees)
-
-    return job.finished()
+    await this.clickupService.send(clickup, assignees)
+    return job.moveToCompleted()
   }
 
   @Process('event-task-comment-posted')
@@ -48,8 +47,7 @@ export class ClickupJob {
       event: payload.event,
     }
 
-    this.clickupService.send(clickup, assignees)
-
-    return job.finished()
+    await this.clickupService.send(clickup, assignees)
+    return job.moveToCompleted()
   }
 }
