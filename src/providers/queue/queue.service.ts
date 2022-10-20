@@ -13,35 +13,28 @@ export class QueueService {
 
   queueOptions: JobOptions = {
     delay: 10000,
-    attempts: 0,
+    attempts: 1,
     removeOnFail: true,
     removeOnComplete: {
       age: 8 * 3600,
       count: 3000,
     },
     timeout: 30000,
-    lifo: true,
-  }
-
-  randomDelayQueueOptions = () => {
-    const jobOptions = this.queueOptions
-    jobOptions.delay = Math.floor(jobOptions.delay * (Math.random() * 5))
-    return jobOptions
   }
 
   eventMergeGithub = (data: any) => {
-    this.github.add('event-merge', data, this.randomDelayQueueOptions())
+    this.github.add('event-merge', data, this.queueOptions)
   }
 
   eventMergeGitlab = (data: any) => {
-    this.gitlab.add('event-merge', data, this.randomDelayQueueOptions())
+    this.gitlab.add('event-merge', data, this.queueOptions)
   }
 
   eventClickup = (event: string, data: any) => {
-    this.clickup.add(event, data, this.randomDelayQueueOptions())
+    this.clickup.add(event, data, this.queueOptions)
   }
 
   eventQase = (data: any) => {
-    this.qase.add('event-qase', data, this.randomDelayQueueOptions())
+    this.qase.add('event-qase', data, this.queueOptions)
   }
 }
