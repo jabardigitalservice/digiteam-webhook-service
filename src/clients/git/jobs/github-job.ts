@@ -18,10 +18,10 @@ export class GithubJob {
       repoUrl: payload.pull_request.head.repo.html_url,
       url: payload.pull_request.html_url,
       description: payload.pull_request.body,
-      createdBy: payload.pull_request.user.login,
     }
-
+    await job.progress(50)
     await this.gitService.send(git, 'github')
+    await job.progress(100)
     return job.moveToCompleted()
   }
 }

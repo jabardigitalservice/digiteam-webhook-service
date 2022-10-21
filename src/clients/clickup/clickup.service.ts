@@ -75,7 +75,9 @@ export class ClickupService {
 
   public getAssigneesEventComment = (description: string) => {
     let participants: any = regex('participants: (.+)').exec(description)
-    participants = participants ? participants[1] : []
+    participants = participants ? participants[1] : null
+
+    if (!participants) throw new BadRequestException()
 
     const assignees = []
     for (const participant of participants.split('@')) {

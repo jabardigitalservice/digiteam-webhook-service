@@ -20,8 +20,9 @@ export class QaseJob {
       project_code: payload.project_code,
       event_name: payload.event_name,
     }
-
+    await job.progress(50)
     await this.qaseService.send(qase)
+    await job.progress(100)
     return job.moveToCompleted()
   }
 }

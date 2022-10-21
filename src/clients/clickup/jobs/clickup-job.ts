@@ -1,5 +1,5 @@
 import { Process, Processor } from '@nestjs/bull'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bull'
 import { ClickupTaskCommentPosted } from 'src/interface/clickup-task-comment-posted.interface'
@@ -19,7 +19,7 @@ export class ClickupJob {
 
     const statuses = this.configService.get('clickup.statuses') as string[]
     const status = task.status.status.toUpperCase().trim()
-    if (!statuses.includes(status)) return job.remove()
+    if (!statuses.includes(status)) throw new BadRequestException()
 
     const assignees = task.assignees.map((item) => item.username)
     const clickup: Clickup = {
@@ -27,8 +27,9 @@ export class ClickupJob {
       description: task.description,
       event: payload.event,
     }
-
+    await job.progress(50)
     await this.clickupService.send(clickup, assignees)
+    await job.progress(100)
     return job.moveToCompleted()
   }
 
@@ -46,8 +47,9 @@ export class ClickupJob {
       description,
       event: payload.event,
     }
-
+    await job.progress(50)
     await this.clickupService.send(clickup, assignees)
+    await job.progress(100)
     return job.moveToCompleted()
   }
 }

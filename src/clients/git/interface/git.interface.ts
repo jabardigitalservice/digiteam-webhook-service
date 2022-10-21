@@ -3,5 +3,4 @@ export interface Git {
   repoUrl: string
   url: string
   description: string
-  createdBy: string
 }

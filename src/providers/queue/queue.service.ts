@@ -14,7 +14,10 @@ export class QueueService {
   queueOptions: JobOptions = {
     delay: 10000,
     attempts: 1,
-    removeOnFail: true,
+    removeOnFail: {
+      age: 5 * 3600,
+      count: 1000,
+    },
     removeOnComplete: {
       age: 8 * 3600,
       count: 3000,

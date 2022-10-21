@@ -16,6 +16,19 @@ export class ScreenshotService {
   screenshot = async (url: string): Promise<string> => {
     if (!url || this.isUrlImage(url)) return url
 
+    // attempts 3 for Get Screenshot
+    let urlImage: string
+    for (let index = 0; index < 3; index++) {
+      urlImage = await this.getScreenshot(url)
+      if (urlImage) break
+      // delay 1 second for next retry
+      await new Promise((r) => setTimeout(r, 1000))
+    }
+
+    return urlImage
+  }
+
+  getScreenshot = async (url: string) => {
     try {
       const response = await this.httpService.axiosRef.post(
         this.configService.get('url.screenshot'),

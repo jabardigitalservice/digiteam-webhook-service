@@ -18,10 +18,11 @@ export class GitlabJob {
       repoUrl: payload.repository.homepage,
       url: payload.object_attributes.url,
       description: payload.object_attributes.description,
-      createdBy: payload.user.name,
     }
 
+    await job.progress(50)
     await this.gitService.send(git, 'gitlab')
+    await job.progress(100)
     return job.moveToCompleted()
   }
 }
