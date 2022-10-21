@@ -1,14 +1,16 @@
-import { Process, Processor } from '@nestjs/bull'
+import { OnQueueFailed, Process, Processor } from '@nestjs/bull'
 import { Injectable } from '@nestjs/common'
 import { Job } from 'bull'
+import { source } from 'src/common/helpers/source'
 import { QaseTest } from 'src/interface/qase-test.interface'
+import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { Qase } from '../interface/qase.interface'
 import { QaseService } from '../qase.service'
 
 @Injectable()
-@Processor('qase')
+@Processor(source.QASE)
 export class QaseJob {
-  constructor(private qaseService: QaseService) {}
+  constructor(private qaseService: QaseService, private elasticService: ElasticService) {}
 
   @Process('event-qase')
   async eventMerge(job: Job) {
@@ -24,5 +26,14 @@ export class QaseJob {
     await this.qaseService.send(qase)
     await job.progress(100)
     return job.moveToCompleted()
+  }
+
+  @OnQueueFailed()
+  onQueueFailed(job: Job) {
+    this.elasticService.createElasticEvidenceFailed({
+      isValid: false,
+      source: source.QASE,
+      ...job.data,
+    })
   }
 }

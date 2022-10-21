@@ -1,16 +1,22 @@
-import { Process, Processor } from '@nestjs/bull'
+import { OnQueueFailed, Process, Processor } from '@nestjs/bull'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bull'
+import { source } from 'src/common/helpers/source'
 import { ClickupTaskCommentPosted } from 'src/interface/clickup-task-comment-posted.interface'
 import { ClickupTaskStatusUpdated } from 'src/interface/clickup-task-status-updated.interface'
+import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { ClickupService } from '../clickup.service'
 import { Clickup } from '../interface/clickup.interface'
 
 @Injectable()
-@Processor('clickup')
+@Processor(source.CLICKUP)
 export class ClickupJob {
-  constructor(private clickupService: ClickupService, private configService: ConfigService) {}
+  constructor(
+    private clickupService: ClickupService,
+    private configService: ConfigService,
+    private elasticService: ElasticService
+  ) {}
 
   @Process('event-task-status-updated')
   async eventTaskStatusUpdated(job: Job) {
@@ -51,5 +57,14 @@ export class ClickupJob {
     await this.clickupService.send(clickup, assignees)
     await job.progress(100)
     return job.moveToCompleted()
+  }
+
+  @OnQueueFailed()
+  onQueueFailed(job: Job) {
+    this.elasticService.createElasticEvidenceFailed({
+      isValid: false,
+      source: source.CLICKUP,
+      ...job.data,
+    })
   }
 }

@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { source } from 'src/common/helpers/source'
 import { regex } from 'src/common/helpers/regex'
 import { ClickupTask } from 'src/interface/clickup-task.interface'
 import { Evidence } from 'src/interface/evidence.interface'
@@ -52,7 +53,7 @@ export class ClickupService {
     const evidence = await this.evidenceService.getEvidence(clickup.description, assignees)
     evidence.source = {
       ...clickup,
-      source: 'clickup',
+      source: source.CLICKUP,
     }
     evidence.url = clickup.url
     return evidence

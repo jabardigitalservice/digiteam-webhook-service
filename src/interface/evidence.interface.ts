@@ -6,6 +6,6 @@ export interface Evidence {
   date?: string
   screenshot?: string
   attachment?: string
-  isValid?: string
+  isValid?: boolean
   source?: any
 }

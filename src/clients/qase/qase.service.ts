@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { source } from 'src/common/helpers/source'
 import { Evidence } from 'src/interface/evidence.interface'
 import { ElasticService } from 'src/providers/elastic/elastic.service'
 import { EvidenceService } from 'src/providers/evidence/evidence.service'
@@ -25,7 +26,7 @@ export class QaseService {
     const evidence = await this.evidenceService.getEvidence(qase.description)
     evidence.source = {
       ...qase,
-      source: 'qase',
+      source: source.QASE,
     }
     evidence.url = evidence.attachment
     return evidence

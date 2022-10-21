@@ -18,8 +18,15 @@ export class ElasticService {
   create = async (data: any) => {
     return this.elasticSearchService.index({
       index: this.getIndex(),
-      body: data,
+      body: {
+        createdAt: moment().toISOString(),
+        ...data,
+      },
     })
+  }
+
+  public createElasticEvidenceFailed = async (data: any): Promise<void> => {
+    this.create(data)
   }
 
   public createElasticEvidence = async (evidence: Evidence): Promise<void> => {
@@ -28,7 +35,6 @@ export class ElasticService {
       if (!participant) continue
       this.create({
         project: evidence.project.trimEnd(),
-        createdAt: moment().toISOString(),
         participant,
         ...evidence,
       })
