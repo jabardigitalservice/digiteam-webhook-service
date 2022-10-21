@@ -25,10 +25,6 @@ export class ElasticService {
     })
   }
 
-  public createElasticEvidenceFailed = async (data: any): Promise<void> => {
-    this.create(data)
-  }
-
   public createElasticEvidence = async (evidence: Evidence): Promise<void> => {
     const { participants } = evidence
     for (const participant of participants) {

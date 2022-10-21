@@ -30,10 +30,12 @@ export class QaseJob {
 
   @OnQueueFailed()
   onQueueFailed(job: Job) {
-    this.elasticService.createElasticEvidenceFailed({
+    this.elasticService.create({
       isValid: false,
-      source: source.QASE,
-      ...job.data,
+      source: {
+        ...job.data,
+        source: source.QASE,
+      },
     })
   }
 }

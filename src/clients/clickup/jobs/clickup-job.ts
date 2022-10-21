@@ -61,10 +61,12 @@ export class ClickupJob {
 
   @OnQueueFailed()
   onQueueFailed(job: Job) {
-    this.elasticService.createElasticEvidenceFailed({
+    this.elasticService.create({
       isValid: false,
-      source: source.CLICKUP,
-      ...job.data,
+      source: {
+        ...job.data,
+        source: source.CLICKUP,
+      },
     })
   }
 }

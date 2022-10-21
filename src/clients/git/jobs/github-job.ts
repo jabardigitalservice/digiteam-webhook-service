@@ -29,10 +29,12 @@ export class GithubJob {
 
   @OnQueueFailed()
   onQueueFailed(job: Job) {
-    this.elasticService.createElasticEvidenceFailed({
+    this.elasticService.create({
       isValid: false,
-      source: source.GITHUB,
-      ...job.data,
+      source: {
+        ...job.data,
+        source: source.GITHUB,
+      },
     })
   }
 }
