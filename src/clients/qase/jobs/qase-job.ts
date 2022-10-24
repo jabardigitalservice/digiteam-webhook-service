@@ -15,9 +15,14 @@ export class QaseJob {
   @Process('event-qase')
   async eventMerge(job: Job) {
     const payload = job.data as QaseTest
+
+    let description = ''
+    if (payload.payload.description)  {
+      description = payload.payload.description
+    }
     const qase: Qase = {
       description: decodeURIComponent(
-        payload.payload.description.replace(new RegExp('\\\\', 'g'), '')
+        description.replace(new RegExp('\\\\', 'g'), '')
       ),
       project_code: payload.project_code,
       event_name: payload.event_name,
