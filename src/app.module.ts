@@ -8,6 +8,7 @@ import { ClickupModule as ReceiverClickupModule } from './receivers/clickup/clic
 import { ClickupModule } from './clients/clickup/clickup.module'
 import { QaseModule as ReceiverQaseModule } from './receivers/qase/qase.module'
 import { QaseModule } from './clients/qase/qase.module'
+import { HttpModule } from './receivers/http/http.module'
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { QaseModule } from './clients/qase/qase.module'
     ClickupModule,
     ReceiverQaseModule,
     QaseModule,
+    HttpModule,
   ],
   providers: [],
 })

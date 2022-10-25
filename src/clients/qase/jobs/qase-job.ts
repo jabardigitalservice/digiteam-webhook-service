@@ -17,13 +17,11 @@ export class QaseJob {
     const payload = job.data as QaseTest
 
     let description = ''
-    if (payload.payload.description)  {
+    if (payload.payload.description) {
       description = payload.payload.description
     }
     const qase: Qase = {
-      description: decodeURIComponent(
-        description.replace(new RegExp('\\\\', 'g'), '')
-      ),
+      description: decodeURIComponent(description.replace(new RegExp('\\\\', 'g'), '')),
       project_code: payload.project_code,
       event_name: payload.event_name,
     }
