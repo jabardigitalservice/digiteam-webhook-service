@@ -22,7 +22,8 @@ export class ScreenshotService {
       urlImage = await this.getScreenshot(url)
       if (urlImage) break
       // delay 1 second for next retry
-      await new Promise((r) => setTimeout(r, 1000))
+      const iterasi = index + 1
+      await new Promise((resolve) => setTimeout(resolve, iterasi * 2000))
     }
 
     return urlImage
