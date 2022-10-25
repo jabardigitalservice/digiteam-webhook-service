@@ -25,7 +25,7 @@ export class ClickupJob {
 
     const statuses = this.configService.get('clickup.statuses') as string[]
     const status = task.status.status.toUpperCase().trim()
-    if (!statuses.includes(status)) throw new BadRequestException()
+    if (!statuses.includes(status)) return job.finished()
 
     const assignees = task.assignees.map((item) => item.username)
     const clickup: Clickup = {
