@@ -2,6 +2,7 @@ import { Body, Controller, Param, Post, Res, UsePipes } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiBody, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
+import { exampleEvidence } from 'src/common/swagger/http'
 import { verifySecretKey } from 'src/common/helpers/verifySecret'
 import { JoiValidationPipe } from 'src/common/pipe/joi-validator.pipe'
 import { Evidence } from 'src/interface/evidence.interface'
@@ -13,17 +14,11 @@ import { EvidenceSchema } from './rules.schema'
 export class HttpController {
   constructor(private config: ConfigService, private service: HttpService) {}
 
-  @Post('/:secret')
+  @Post('evidence/:secret')
   @ApiBody({
     schema: {
       type: 'object',
-      example: {
-        title: 'TITLE',
-        project: 'PROJECT',
-        url: 'ATTACHMENT',
-        screenshot: 'SCREENSHOT URL (OPTIONAL)',
-        date: 'DATE (OPTIONAL)',
-      },
+      example: exampleEvidence,
     },
   })
   async merge(
