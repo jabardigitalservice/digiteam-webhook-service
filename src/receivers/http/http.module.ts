@@ -8,5 +8,6 @@ import { HttpService } from './http.service'
   imports: [TelegramModule, ScreenshotModule],
   controllers: [HttpController],
   providers: [HttpService],
+  exports: [HttpService],
 })
 export class HttpModule {}
