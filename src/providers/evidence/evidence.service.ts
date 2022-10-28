@@ -47,9 +47,7 @@ export class EvidenceService {
 
     if (!evidence.isValid) throw new BadRequestException()
 
-    evidence.participants = evidence.participants
-      ? evidence.participants.split(/[ ,]+/)
-      : []
+    evidence.participants = evidence.participants ? evidence.participants.split(/[ ,]+/) : []
 
     const users = assigness.length ? assigness : evidence.participants
     evidence.participants = await this.userService.getUsers(users)
