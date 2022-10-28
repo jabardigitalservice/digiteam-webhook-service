@@ -27,7 +27,7 @@ export class EvidenceService {
         break
       }
 
-      evidence[item] = evidence[item] ? evidence[item][1] : null
+      evidence[item] = evidence[item] ? evidence[item][1] : ''
     }
 
     evidence.isValid = isValid
