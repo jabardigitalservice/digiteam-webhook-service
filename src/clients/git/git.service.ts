@@ -36,7 +36,7 @@ export class GitService {
   public sendEvidence = async (evidence: Evidence, isPrivateRepo: boolean): Promise<void> => {
     const messageByCreated = this.telegramService.formatByCreated(evidence)
     const messageByReview = this.telegramService.formatByReview(evidence)
-    const url = evidence.screenshot ? evidence.screenshot : evidence.url
+    const url = evidence.screenshot ? evidence.screenshot.trim() : evidence.url
 
     const picture = await this.screenshotService.screenshot(url)
     const messageId = await this.telegramService.sendPhotoWithBot(picture)
