@@ -14,7 +14,8 @@ export class ScreenshotService {
   }
 
   screenshot = async (url: string): Promise<string> => {
-    if (!url || this.isUrlImage(url)) return url
+    url = url.trim()
+    if (!url || this.isUrlImage(url)) return
 
     // attempts 3 for Get Screenshot
     let urlImage: string
