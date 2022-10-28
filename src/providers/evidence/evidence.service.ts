@@ -27,7 +27,7 @@ export class EvidenceService {
         break
       }
 
-      evidence[item] = evidence[item] ? evidence[item][1] : ''
+      evidence[item] = evidence[item] ? evidence[item][1].trim() : ''
     }
 
     evidence.isValid = isValid
@@ -48,7 +48,7 @@ export class EvidenceService {
     if (!evidence.isValid) throw new BadRequestException()
 
     evidence.participants = evidence.participants
-      ? evidence.participants.trimEnd().split(/[ ,]+/)
+      ? evidence.participants.split(/[ ,]+/)
       : []
 
     const users = assigness.length ? assigness : evidence.participants

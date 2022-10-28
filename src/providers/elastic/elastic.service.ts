@@ -30,7 +30,7 @@ export class ElasticService {
     for (const participant of participants) {
       if (!participant) continue
       this.create({
-        project: evidence.project.trimEnd(),
+        project: evidence.project,
         participant,
         ...evidence,
       })

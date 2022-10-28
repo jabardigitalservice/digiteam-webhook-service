@@ -76,7 +76,7 @@ export class ClickupService {
 
   public getAssigneesEventComment = (description: string) => {
     let participants: any = regex('participants: (.+)').exec(description)
-    participants = participants ? participants[1] : null
+    participants = participants ? participants[1] : ''
 
     if (!participants) throw new BadRequestException()
 
