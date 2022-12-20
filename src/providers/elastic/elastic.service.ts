@@ -9,7 +9,7 @@ import { Evidence } from 'src/interface/evidence.interface'
 export class ElasticService {
   constructor(
     private elasticSearchService: ElasticsearchService,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {}
 
   getIndex = () => {
