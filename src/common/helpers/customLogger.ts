@@ -28,18 +28,4 @@ export class customLogger implements LoggerService {
   warn(message: any, ...optionalParams: any[]) {
     this.createLog('warn', message)
   }
-
-  /**
-   * Write a 'debug' level log.
-   */
-  debug?(message: any, ...optionalParams: any[]) {
-    this.createLog('debug', message)
-  }
-
-  /**
-   * Write a 'verbose' level log.
-   */
-  verbose?(message: any, ...optionalParams: any[]) {
-    this.createLog('verbose', message)
-  }
 }
