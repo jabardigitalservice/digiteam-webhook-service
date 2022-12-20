@@ -36,6 +36,7 @@
     "helmet": "^6.0.0",
     "joi": "^17.6.1",
     "moment": "^2.29.4",
+    "nestjs-winston-logger": "^1.1.11",
     "random-bigint": "0.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
