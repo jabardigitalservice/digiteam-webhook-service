@@ -8,7 +8,6 @@ import { loadSwagger } from './common/swagger/swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
     logger: new customLogger(),
   })
 
