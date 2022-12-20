@@ -1,11 +1,14 @@
 import { LoggerService } from '@nestjs/common'
-import logger from './logger'
+import { NestjsWinstonLoggerService } from 'nestjs-winston-logger'
+import { format, transports } from 'winston'
 
-export class MyLogger implements LoggerService {
-  /**
-   * Write a 'log' level log.
-   */
-  log(message: any, ...optionalParams: any[]) {
+export class customLogger implements LoggerService {
+  private format(message: any) {
+    const logger = new NestjsWinstonLoggerService({
+      format: format.combine(format.timestamp({ format: 'isoDateTime' }), format.json()),
+      transports: [new transports.Console()],
+    })
+
     if (typeof message === 'string') {
       logger.log(message)
       return
@@ -13,17 +16,18 @@ export class MyLogger implements LoggerService {
 
     logger.log(JSON.stringify(message))
   }
+  /**
+   * Write a 'log' level log.
+   */
+  log(message: any, ...optionalParams: any[]) {
+    this.format(message)
+  }
 
   /**
    * Write an 'error' level log.
    */
   error(message: any, ...optionalParams: any[]) {
-    if (typeof message === 'string') {
-      logger.log(message)
-      return
-    }
-
-    logger.log(JSON.stringify(message))
+    this.format(message)
   }
 
   /**

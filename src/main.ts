@@ -3,14 +3,13 @@ import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import helmet from 'helmet'
 import { AppModule } from './app.module'
-import logger from './common/helpers/logger'
-import { MyLogger } from './common/helpers/myLogger'
+import { customLogger } from './common/helpers/customLogger'
 import { loadSwagger } from './common/swagger/swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    logger: new MyLogger(),
+    logger: new customLogger(),
   })
 
   const configService = app.get(ConfigService)
