@@ -36,12 +36,12 @@
     "helmet": "^6.0.0",
     "joi": "^17.6.1",
     "moment": "^2.29.4",
-    "nestjs-winston-logger": "^1.1.11",
     "random-bigint": "0.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "telegram": "^2.12.5"
+    "telegram": "^2.12.5",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
