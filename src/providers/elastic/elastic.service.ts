@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
 import moment from 'moment'
-import logger from 'src/common/helpers/logger'
 import { Evidence } from 'src/interface/evidence.interface'
 
 @Injectable()
 export class ElasticService {
+  private readonly logger = new Logger()
+
   constructor(
     private elasticSearchService: ElasticsearchService,
     private configService: ConfigService
@@ -17,12 +18,10 @@ export class ElasticService {
   }
 
   create = async (data: any) => {
-    logger.log(
-      JSON.stringify({
-        createdAt: moment().toISOString(),
-        ...data,
-      })
-    )
+    this.logger.log({
+      createdAt: moment().toISOString(),
+      ...data,
+    })
     return this.elasticSearchService.index({
       index: this.getIndex(),
       body: {
@@ -36,13 +35,11 @@ export class ElasticService {
     const { participants } = evidence
     for (const participant of participants) {
       if (!participant) continue
-      logger.log(
-        JSON.stringify({
-          project: evidence.project,
-          participant,
-          ...evidence,
-        })
-      )
+      this.logger.log({
+        project: evidence.project,
+        participant,
+        ...evidence,
+      })
       this.create({
         project: evidence.project,
         participant,
