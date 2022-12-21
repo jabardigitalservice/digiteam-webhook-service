@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import { TelegramClient } from 'telegram'
+import { LogLevel } from 'telegram/extensions/Logger'
 import { StringSession } from 'telegram/sessions'
 
 config()
@@ -12,6 +13,8 @@ const user = new TelegramClient(
   process.env.TELEGRAM_USER_HASH,
   {}
 )
+
+user.setLogLevel(LogLevel.NONE)
 
 export default () => ({
   app: {
