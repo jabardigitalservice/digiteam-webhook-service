@@ -18,7 +18,7 @@ export class ElasticService {
   }
 
   create = async (data: any) => {
-    this.logger.log({
+    this.logger.log('elastic create evidence', {
       createdAt: moment().toISOString(),
       ...data,
     })
@@ -35,7 +35,7 @@ export class ElasticService {
     const { participants } = evidence
     for (const participant of participants) {
       if (!participant) continue
-      this.logger.log({
+      this.logger.log('elastic create evidence', {
         project: evidence.project,
         participant,
         ...evidence,
