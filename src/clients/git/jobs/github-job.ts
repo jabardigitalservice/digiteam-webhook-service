@@ -22,7 +22,7 @@ export class GithubJob {
       description: payload.pull_request.body,
     }
     await job.progress(50)
-    await this.gitService.send(git, source.GITHUB, payload.repository.private)
+    await this.gitService.send(git, source.GITHUB)
     await job.progress(100)
     return job.moveToCompleted()
   }

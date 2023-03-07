@@ -1,20 +1,6 @@
 import { config } from 'dotenv'
-import { TelegramClient } from 'telegram'
-import { LogLevel } from 'telegram/extensions/Logger'
-import { StringSession } from 'telegram/sessions'
 
 config()
-
-// init user telegram
-const stringSession = new StringSession(process.env.TELEGRAM_USER_SESSION)
-const user = new TelegramClient(
-  stringSession,
-  Number(parseInt(process.env.TELEGRAM_USER_ID)),
-  process.env.TELEGRAM_USER_HASH,
-  {}
-)
-
-user.setLogLevel(LogLevel.NONE)
 
 export default () => ({
   app: {
@@ -32,7 +18,6 @@ export default () => ({
     bot: process.env.TELEGRAM_BOT,
     chatID: process.env.TELEGRAM_CHAT_ID,
     channelChatID: process.env.TELEGRAM_CHANNEL_CHAT_ID,
-    user,
   },
   redis: {
     host: process.env.REDIS_HOST,

@@ -41,6 +41,6 @@ export class QaseService {
       return
     }
 
-    this.telegramService.sendMessageWithBot(message)
+    this.telegramService.sendMessageWithChannel(message)
   }
 }

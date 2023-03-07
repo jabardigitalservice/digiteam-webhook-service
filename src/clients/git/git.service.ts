@@ -14,12 +14,11 @@ export class GitService {
     private elasticService: ElasticService,
     private evidenceService: EvidenceService,
     private screenshotService: ScreenshotService,
-    private httpService: HttpService
   ) {}
 
-  send = async (git: Git, source: string, isPrivateRepo: boolean = true) => {
+  send = async (git: Git, source: string) => {
     const evidence = await this.getEvidence(git, source)
-    this.sendEvidence(evidence, isPrivateRepo)
+    this.sendEvidence(evidence)
     this.elasticService.createElasticEvidence(evidence)
   }
 
@@ -33,7 +32,7 @@ export class GitService {
     return evidence
   }
 
-  public sendEvidence = async (evidence: Evidence, isPrivateRepo: boolean): Promise<void> => {
+  public sendEvidence = async (evidence: Evidence): Promise<void> => {
     const messageByCreated = this.telegramService.formatByCreated(evidence)
     const messageByReview = this.telegramService.formatByReview(evidence)
     const url = evidence.screenshot ? evidence.screenshot : evidence.url
@@ -46,7 +45,7 @@ export class GitService {
       return
     }
 
-    this.telegramService.sendMessageWithBot(messageByCreated)
-    this.telegramService.sendMessageWithBot(messageByReview)
+    this.telegramService.sendMessageWithChannel(messageByCreated)
+    this.telegramService.sendMessageWithChannel(messageByReview)
   }
 }

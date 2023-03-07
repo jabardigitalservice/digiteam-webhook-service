@@ -64,14 +64,13 @@ export class ClickupService {
     const url = evidence.screenshot ? evidence.screenshot : evidence.url
 
     const picture = await this.screenshotService.screenshot(url)
-    const messageId = await this.telegramService.sendPhotoWithBot(picture)
 
-    if (picture && messageId) {
-      this.telegramService.sendMessageWithUser(message, messageId)
+    if (picture) {
+      this.telegramService.sendPhotoWithChannel(picture, message)
       return
     }
 
-    this.telegramService.sendMessageWithBot(message)
+    this.telegramService.sendMessageWithChannel(message)
   }
 
   public getAssigneesEventComment = (description: string) => {

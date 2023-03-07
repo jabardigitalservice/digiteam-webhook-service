@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Api, TelegramClient } from 'telegram'
 import { HttpService } from '@nestjs/axios'
-import random from 'random-bigint'
 import { Evidence } from 'src/interface/evidence.interface'
 
 @Injectable()
@@ -11,7 +9,6 @@ export class TelegramService {
   private chatID = this.configService.get('telegram.chatID')
   private channelChatID = this.configService.get('telegram.channelChatID')
   private bot = this.configService.get('telegram.bot')
-  private user: TelegramClient = this.configService.get('telegram.user')
 
   constructor(private configService: ConfigService, private httpService: HttpService) {}
 
@@ -68,20 +65,6 @@ export class TelegramService {
     } catch (error) {
       return null
     }
-  }
-
-  public sendMessageWithUser = async (message: string, replyToMsgId?: number) => {
-    if (!message) return
-    if (this.user.disconnected) await this.user.connect()
-    this.user.invoke(
-      new Api.messages.SendMessage({
-        peer: this.chatID,
-        message,
-        randomId: random(128),
-        noWebpage: true,
-        replyToMsgId,
-      })
-    )
   }
 
   public formatByCreated = (evidence: Evidence): string => {
