@@ -39,15 +39,12 @@ export class GitService {
     const url = evidence.screenshot ? evidence.screenshot : evidence.url
 
     const picture = await this.screenshotService.screenshot(url)
-    const messageId = await this.telegramService.sendPhotoWithBot(picture)
 
-    if (picture && messageId) {
-      this.telegramService.sendMessageWithUser(messageByCreated, messageId)
-      this.telegramService.sendMessageWithUser(messageByReview, messageId)
+    if (picture) {
+      this.telegramService.sendPhotoWithChannel(picture, messageByCreated)
+      this.telegramService.sendPhotoWithChannel(picture, messageByReview)
       return
     }
-
-    if (!isPrivateRepo) return this.httpService.evidence(evidence)
 
     this.telegramService.sendMessageWithBot(messageByCreated)
     this.telegramService.sendMessageWithBot(messageByReview)

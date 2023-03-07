@@ -31,6 +31,7 @@ export default () => ({
   telegram: {
     bot: process.env.TELEGRAM_BOT,
     chatID: process.env.TELEGRAM_CHAT_ID,
+    channelChatID: process.env.TELEGRAM_CHANNEL_CHAT_ID,
     user,
   },
   redis: {

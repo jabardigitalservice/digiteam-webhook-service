@@ -9,6 +9,7 @@ import { Evidence } from 'src/interface/evidence.interface'
 export class TelegramService {
   private url = this.configService.get('url.telegram')
   private chatID = this.configService.get('telegram.chatID')
+  private channelChatID = this.configService.get('telegram.channelChatID')
   private bot = this.configService.get('telegram.bot')
   private user: TelegramClient = this.configService.get('telegram.user')
 
@@ -23,6 +24,15 @@ export class TelegramService {
     })
   }
 
+  public sendMessageWithChannel = async (message: string) => {
+    if (!message) return
+    const url = `${this.url}/${this.bot}/sendMessage`
+    this.httpService.axiosRef.post(url, {
+      chat_id: this.channelChatID,
+      text: message,
+    })
+  }
+
   public sendPhotoWithBot = async (picture: string): Promise<number> => {
     if (!picture) return null
 
@@ -32,6 +42,25 @@ export class TelegramService {
         {
           chat_id: this.chatID,
           photo: picture,
+        }
+      )
+      const { message_id: messageId } = response.data.result
+      return Number(messageId)
+    } catch (error) {
+      return null
+    }
+  }
+
+  public sendPhotoWithChannel = async (picture: string, caption?: string): Promise<number> => {
+    if (!picture) return null
+
+    try {
+      const response = await this.httpService.axiosRef.postForm(
+        `${this.url}/${this.bot}/sendPhoto`,
+        {
+          chat_id: this.channelChatID,
+          photo: picture,
+          caption,
         }
       )
       const { message_id: messageId } = response.data.result
