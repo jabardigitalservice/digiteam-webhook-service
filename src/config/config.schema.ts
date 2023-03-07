@@ -12,6 +12,7 @@ export const schema = Joi.object({
 
   TELEGRAM_BOT: Joi.string().required(),
   TELEGRAM_CHAT_ID: Joi.number().required(),
+  TELEGRAM_CHANNEL_CHAT_ID: Joi.number().required(),
   TELEGRAM_USER_ID: Joi.number().required(),
   TELEGRAM_USER_HASH: Joi.string().required(),
   TELEGRAM_USER_SESSION: Joi.string().required(),

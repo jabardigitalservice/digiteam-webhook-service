@@ -35,10 +35,9 @@ export class QaseService {
   public sendEvidence = async (evidence: Evidence): Promise<void> => {
     const message = this.telegramService.formatDefault(evidence)
     const picture = await this.screenshotService.screenshot(evidence.screenshot)
-    const messageId = await this.telegramService.sendPhotoWithBot(picture)
 
-    if (picture && messageId) {
-      this.telegramService.sendMessageWithUser(message, messageId)
+    if (picture) {
+      this.telegramService.sendPhotoWithChannel(picture, message)
       return
     }
 
