@@ -41,8 +41,8 @@ export class GitService {
     const picture = await this.screenshotService.screenshot(url)
 
     if (picture) {
-      await this.telegramService.sendPhotoWithChannel(picture, messageByCreated)
-      await this.telegramService.sendPhotoWithChannel(picture, messageByReview)
+      this.telegramService.sendPhotoWithChannel(picture, messageByCreated)
+      this.telegramService.sendPhotoWithChannel(picture, messageByReview)
       return
     }
 
