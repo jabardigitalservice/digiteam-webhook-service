@@ -22,13 +22,7 @@ export class ElasticService {
       createdAt: moment().toISOString(),
       ...data,
     })
-    return this.elasticSearchService.index({
-      index: this.getIndex(),
-      body: {
-        createdAt: moment().toISOString(),
-        ...data,
-      },
-    })
+    return
   }
 
   public createElasticEvidence = async (evidence: Evidence): Promise<void> => {
@@ -36,11 +30,6 @@ export class ElasticService {
     for (const participant of participants) {
       if (!participant) continue
       this.logger.log('elastic create evidence', {
-        project: evidence.project,
-        participant,
-        ...evidence,
-      })
-      this.create({
         project: evidence.project,
         participant,
         ...evidence,
