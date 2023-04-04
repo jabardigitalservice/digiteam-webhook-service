@@ -5,6 +5,7 @@ import { EvidenceService } from 'src/providers/evidence/evidence.service'
 import { ScreenshotService } from 'src/providers/screenshot/screenshot.service'
 import { TelegramService } from 'src/providers/telegram/telegram.service'
 import { Git } from './interface/git.interface'
+import { HttpService } from 'src/receivers/http/http.service'
 
 @Injectable()
 export class GitService {
@@ -18,6 +19,7 @@ export class GitService {
   send = async (git: Git, source: string) => {
     const evidence = await this.getEvidence(git, source)
     this.sendEvidence(evidence)
+    this.elasticService.createElasticEvidence(evidence)
   }
 
   public getEvidence = async (git: Git, source: string): Promise<Evidence> => {

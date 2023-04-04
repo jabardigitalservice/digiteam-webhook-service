@@ -28,6 +28,7 @@ export class ClickupService {
   public send = async (clickup: Clickup, assignees: string[] = []) => {
     const evidence = await this.getEvidence(clickup, assignees)
     this.sendEvidence(evidence)
+    this.elasticService.createElasticEvidence(evidence)
   }
 
   public getTaskByID = async (id: string): Promise<ClickupTask> => {
