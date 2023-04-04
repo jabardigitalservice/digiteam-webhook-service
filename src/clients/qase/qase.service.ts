@@ -19,7 +19,6 @@ export class QaseService {
   send = async (qase: Qase) => {
     const evidence = await this.getEvidence(qase)
     this.sendEvidence(evidence)
-    this.elasticService.createElasticEvidence(evidence)
   }
 
   public getEvidence = async (qase: Qase): Promise<Evidence> => {
