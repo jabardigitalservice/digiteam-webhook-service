@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import path from 'path'
+import { isImageUrl } from 'src/common/helpers/imageChecker'
 
 @Injectable()
 export class ScreenshotService {
@@ -14,7 +15,7 @@ export class ScreenshotService {
   }
 
   screenshot = async (url: string): Promise<string> => {
-    if (!url || this.isUrlImage(url)) return url
+    if (!url || await isImageUrl(url)) return url
 
     // attempts 3 for Get Screenshot
     let urlImage: string
