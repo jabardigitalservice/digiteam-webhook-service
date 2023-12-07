@@ -15,7 +15,7 @@ export class ScreenshotService {
   }
 
   screenshot = async (url: string): Promise<string> => {
-    if (!url || await isImageUrl(url)) return url
+    if (!url || (await isImageUrl(url))) return url
 
     // attempts 3 for Get Screenshot
     let urlImage: string
@@ -32,13 +32,18 @@ export class ScreenshotService {
 
   getScreenshot = async (url: string) => {
     try {
-      const response = await this.httpService.axiosRef.post(
+      const { data } = await this.httpService.axiosRef.post(
         this.configService.get('url.screenshot'),
         {
           url: url,
+          property: {
+            height: 1280,
+            width: 1280
+          }
         }
       )
-      return response.data
+
+      return data.data?.url || data
     } catch (error) {
       return null
     }
